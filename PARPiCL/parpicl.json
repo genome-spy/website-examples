@@ -1,0 +1,215 @@
+{
+  "genome": {
+    "name": "hg38"
+  },
+
+  "specId": "ParpiCL",
+
+  "description": [
+    "PARPi Cell Lines, Färkkilä et al.",
+    "Anniina Färkkilä, Alfredo Rodríguez, Jaana Oikkonen, Doga C. Gulhan, Huy Nguyen, Julieta Domínguez, Sandra Ramos, Caitlin E. Mills, Fernando Perez-Villatoro, Jean-Bernard Lazaro, Jia Zhou, Connor S. Clairmont, Lisa A. Moreau, Peter J. Park, Peter K. Sorger, Sampsa Hautaniemi, Sara Frias and Alan D. D'Andrea",
+    "Heterogeneity and clonal evolution of acquired PARP inhibitor resistance in TP53- and BRCA1-deficient cells",
+    "Cancer Res January 29 2021 DOI: 10.1158/0008-5472.CAN-20-2912"
+  ],
+
+  "resolve": {
+    "scale": { "x": "shared" }
+  },
+
+  "vconcat": [
+    { "import": { "url": "../shared/cytobands.json" } },
+
+    {
+      "samples": {
+        "data": {
+          "url": "samples.tsv"
+        }
+      },
+      "spec": {
+        "layer": [
+          {
+            "resolve": {
+              "scale": { "color": "independent", "fill": "independent" }
+            },
+
+            "data": {
+              "url": "CNVs.tsv"
+            },
+            "transform": [
+              {
+                "type": "formula",
+                "expr": "log(datum.Segment_Mean) * LOG2E",
+                "as": "Segment_Mean"
+              },
+              {
+                "type": "formula",
+                "expr": "abs(if(datum.meanBaf !== null, datum.meanBaf, 1.0) - 0.5) * 2",
+                "as": "loh"
+              }
+            ],
+            "encoding": {
+              "sample": { "field": "Sample", "type": "nominal" },
+              "x": {
+                "chrom": "Chromosome",
+                "pos": "Start",
+                "type": "locus",
+                "axis": null
+              },
+              "x2": { "chrom": "Chromosome", "pos": "End", "offset": 1 }
+            },
+            "layer": [
+              {
+                "name": "CNV",
+                "title": "Copy-number variance",
+                "mark": {
+                  "type": "rect",
+                  "minWidth": 1.0,
+                  "minOpacity": 0.4
+                },
+                "transform": [
+                  {
+                    "type": "formula",
+                    "expr": "datum.End - datum.Start",
+                    "as": "segment length"
+                  }
+                ],
+                "encoding": {
+                  "color": {
+                    "type": "quantitative",
+                    "field": "Segment_Mean",
+                    "scale": {
+                      "domain": [-3, 0, 1.5],
+                      "range": ["#0050f8", "#f6f6f6", "#ff3000"]
+                    }
+                  }
+                }
+              },
+              {
+                "name": "LOH",
+                "title": "Loss of heterozygosity",
+                "mark": {
+                  "type": "rect",
+                  "tooltip": null
+                },
+                "encoding": {
+                  "y": { "field": "loh", "type": "quantitative", "axis": null },
+                  "color": { "value": "black" },
+                  "opacity": {
+                    "expr": "0.12 + 0.09 * datum.loh",
+                    "type": "quantitative",
+                    "scale": { "type": "identity" }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "title": "SNPs and Indels",
+            "mark": {
+              "type": "point",
+              "stroke": "black",
+              "strokeWidth": 1,
+              "strokeOpacity": 0.7,
+              "fillGradientStrength": 0.3
+            },
+            "data": {
+              "url": "mutations.tsv"
+            },
+            "transform": [
+              {
+                "type": "regexFold",
+                "ids": [
+                  "CHROM",
+                  "POS",
+                  "REF",
+                  "ALT",
+                  "ID",
+                  "CADD_phred",
+                  "ExonicFunc.refGene"
+                ],
+                "columnRegex": "^(.*)\\.AF$",
+                "asValue": "VAF",
+                "asKey": "sample"
+              },
+              {
+                "type": "filter",
+                "expr": "datum.VAF >= 0.02"
+              }
+            ],
+            "encoding": {
+              "sample": {
+                "field": "sample",
+                "type": "nominal"
+              },
+              "x": {
+                "chrom": "CHROM",
+                "pos": "POS",
+                "type": "locus"
+              },
+              "color": {
+                "type": "nominal",
+                "field": "Func",
+                "scale": {
+                  "domain": [
+                    "stopgain",
+                    "stoploss",
+                    "frameshift_indel",
+                    "missense",
+                    "splicing",
+                    "inframe_indel",
+                    "synonymous",
+                    "genic_other",
+                    "ncRNA",
+                    "intergenic"
+                  ],
+                  "range": [
+                    "#e31a1c",
+                    "#ff7f00",
+                    "#6a3d9a",
+                    "#1f78b4",
+                    "#b2df8a",
+                    "#cab2d6",
+                    "#33a02c",
+                    "#a6cee3",
+                    "#fdbf6f",
+                    "#c0c0c0"
+                  ]
+                }
+              },
+              "size": {
+                "field": "VAF",
+                "type": "quantitative"
+              },
+              "semanticScore": {
+                "field": "CADD_phred",
+                "type": "quantitative"
+              }
+            }
+          }
+        ]
+      }
+    },
+
+    {
+      "name": "dummyAxis",
+      "height": { "grow": 0 },
+      "data": { "values": [] },
+      "mark": "rect",
+      "padding": { "top": -5 },
+      "encoding": {
+        "x": {
+          "chrom": "chr",
+          "pos": "pos",
+          "type": "locus",
+          "title": null,
+          "axis": {
+            "domain": false
+          }
+        }
+      }
+    },
+
+    { "import": { "url": "../shared/genes.json" } },
+    { "import": { "url": "../shared/cosmic.json" } }
+  ]
+}

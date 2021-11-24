@@ -1,0 +1,60 @@
+{
+  "name": "cosmic",
+  "title": "COSMIC Cancer Gene Census",
+  "description": "COSMIC Cancer Gene Cencus, https://cancer.sanger.ac.uk/census",
+  "height": 18,
+  "data": {
+    "url": "Census_allWed Apr 10 16_11_43 2019.tsv"
+  },
+  "transform": [
+    {
+      "type": "regexExtract",
+      "field": "Genome Location",
+      "regex": "^(X|Y|\\d+):(\\d+)-(\\d+)$",
+      "as": ["_chrom", "_startpos", "_endpos"],
+      "skipInvalidInput": true
+    },
+    {
+      "type": "filter",
+      "expr": "datum._startpos !== undefined"
+    },
+    {
+      "type": "flattenDelimited",
+      "field": "Role in Cancer",
+      "separator": ", "
+    },
+    {
+      "type": "stack",
+      "groupby": ["_chrom", "_startpos"],
+      "sort": { "field": "Role in Cancer" },
+      "offset": "normalize",
+      "as": ["_y0", "_y1"]
+    }
+  ],
+  "mark": {
+    "type": "rect",
+    "minWidth": 2.0,
+    "minOpacity": 0.4
+  },
+  "encoding": {
+    "x": {
+      "chrom": "_chrom",
+      "pos": "_startpos",
+      "type": "locus",
+      "axis": null
+    },
+    "x2": { "chrom": "_chrom", "pos": "_endpos", "offset": 1 },
+    "y": { "field": "_y0", "type": "quantitative", "axis": null },
+    "y2": { "field": "_y1" },
+    "color": {
+      "field": "Role in Cancer",
+      "type": "nominal",
+      "scale": { "scheme": "category10" }
+    },
+    "opacity": {
+      "expr": "datum.Tier == 2 ? 0.2 : 1",
+      "type": "quantitative",
+      "scale": { "type": "identity" }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "description": "A miserably failed t-SNE attempt",
+
+  "data": {
+    "url": "tsne.csv",
+    "format": {
+      "parse": { "sample": "string", "x": "number", "y": "number" }
+    }
+  },
+
+  "encoding": {
+    "x": {
+      "field": "x",
+      "type": "quantitative",
+      "scale": { "domain": [-10, 10], "zoom": true }
+    },
+    "y": {
+      "field": "y",
+      "type": "quantitative",
+      "scale": { "domain": [-10, 10], "zoom": true }
+    }
+  },
+
+  "layer": [
+    {
+      "encoding": {
+        "size": { "value": 60 },
+        "color": { "field": "sample", "type": "nominal" },
+        "opacity": { "value": 0.7 }
+      },
+      "mark": {
+        "type": "point",
+        "geometricZoomBound": 8.5,
+        "tooltip": null
+      }
+    },
+    {
+      "data": {
+        "values": [
+          { "x": -1.565, "y": 7.41, "text": "Ouch, that's sharp!" },
+          { "x": 5.6, "y": -3.7, "text": "What's this pink mass?" },
+          { "x": -4.8, "y": -7.1, "text": "An artistic appendage." }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "dy": 12,
+        "align": "left",
+        "size": 17,
+        "font": "Indie Flower",
+        "angle": 5
+      },
+      "encoding": {
+        "text": { "field": "text", "type": "nominal" }
+      }
+    }
+  ]
+}

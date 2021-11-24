@@ -1,0 +1,122 @@
+{
+  "description": [
+    "High-Grade Serous Ovarian Cancer Associations From OCAC GWAS",
+    "Phelan, C. M., Kuchenbaecker, K. B., Tyrer, J. P., Kar, S. P., Lawrenson, K., Winham, S. J., … Pharoah, P. D. P. (2017).",
+    "Identification of 12 new susceptibility loci for different histotypes of epithelial ovarian cancer",
+    "Nature Genetics, 49(5), 680–691. https://doi.org/10.1038/ng.3826"
+  ],
+
+  "genome": {
+    "name": "hg38"
+  },
+
+  "resolve": { "scale": { "x": "shared" } },
+
+  "vconcat": [
+    {
+      "import": { "url": "../shared/cytobands.json" }
+    },
+    {
+      "layer": [
+        {
+          "data": { "values": [{ "y": 4 }, { "y": 7 }] },
+          "mark": {
+            "type": "rule",
+            "strokeDash": [2, 2]
+          },
+          "encoding": {
+            "y": {
+              "field": "y",
+              "type": "quantitative",
+              "title": null
+            },
+            "color": {
+              "value": "lightgray"
+            }
+          }
+        },
+        {
+          "data": {
+            "url": "ocac_serous_hg_hg38.tsv",
+            "format": {
+              "parse": {
+                "chr": "string",
+                "position": "integer",
+                "ocac_serous_hg_pvalue": "number",
+                "oncoarray_name": "string",
+                "icogs_snp_name": "string"
+              }
+            }
+          },
+
+          "transform": [
+            {
+              "type": "filter",
+              "expr": "test(/^chr([0-9XY])+$/, datum.chr)"
+            },
+            {
+              "type": "formula",
+              "expr": "-log(datum.ocac_serous_hg_pvalue) * LOG10E",
+              "as": "minusLogP"
+            }
+          ],
+
+          "title": "SNP",
+
+          "mark": {
+            "type": "point",
+            "geometricZoomBound": 6,
+            "fillGradientStrength": 0.3,
+            "inwardStroke": true,
+            "stroke": "black",
+            "strokeWidth": 0.7,
+            "fillOpacity": 0.6,
+            "strokeOpacity": 0.8
+          },
+
+          "encoding": {
+            "x": {
+              "chrom": "chr",
+              "pos": "position",
+              "type": "locus"
+            },
+            "y": {
+              "field": "minusLogP",
+              "type": "quantitative",
+              "title": "-log10(p)",
+              "scale": {
+                "domain": [0, 50]
+              }
+            },
+            "color": {
+              "expr": "!!(datum.oncoarray_name || datum.icogs_snp_name)",
+              "type": "nominal",
+              "scale": {
+                "domain": [false, true]
+              }
+            },
+            "stroke": {
+              "expr": "!!(datum.oncoarray_name || datum.icogs_snp_name)",
+              "type": "nominal",
+              "scale": {
+                "domain": [false, true],
+                "range": ["#395F87", "#C16108"]
+              }
+            },
+            "size": {
+              "field": "minusLogP",
+              "type": "quantitative",
+              "scale": {
+                "domain": [0, 50],
+                "range": [3, 225]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "import": { "url": "../shared/genes.json" }
+    }
+  ]
+}

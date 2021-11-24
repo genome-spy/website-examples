@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GenomeSpy</title>
+    <meta charset="UTF-8">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://unpkg.com/genome-spy@0.14.x/dist/style.css"
+    />
+  </head>
+  <body>
+    <script
+      type="text/javascript"
+      src="https://unpkg.com/genome-spy@0.14.x/dist/index.js"
+    ></script>
+
+    <script>
+        const specUrl = new URLSearchParams(window.location.search).get("spec");
+        if (specUrl) {
+            genomeSpyEmbed.embed(document.body, specUrl);
+        } else {
+            document.body.innerHTML = `
+                <p style="color: firebrick">No 'spec' url parameter defined!</p>`;
+        }
+    </script>
+  </body>
+</html>

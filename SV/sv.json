@@ -1,0 +1,196 @@
+{
+  "description": [
+    "Structural variation and segmented copy numbers called using GRIDSS and GATK",
+    "Unpublished and anonymized data"
+  ],
+
+  "genome": { "name": "hg38" },
+
+  "resolve": { "scale": { "x": "shared" } },
+
+  "comment": "TODO, feet: https://www.nature.com/articles/s41586-019-1913-9",
+
+  "concat": [
+    {
+      "spacing": 0,
+      "resolve": { "scale": { "x": "shared" } },
+
+      "concat": [
+        {
+          "data": { "url": "sv.tsv" },
+
+          "transform": [
+            {
+              "type": "filter",
+              "expr": "datum.chr2"
+            },
+            {
+              "type": "linearizeGenomicCoordinate",
+              "chrom": "chr1",
+              "pos": "start1",
+              "as": "_start1"
+            },
+            {
+              "type": "linearizeGenomicCoordinate",
+              "chrom": "chr2",
+              "pos": "start2",
+              "as": "_start2"
+            },
+            {
+              "type": "filter",
+              "expr": "datum._start1 < datum._start2"
+            }
+          ],
+
+          "mark": {
+            "type": "link",
+            "segments": 101
+          },
+
+          "encoding": {
+            "x": {
+              "chrom": "chr1",
+              "pos": "start1",
+              "type": "locus",
+              "axis": null,
+              "scale": { "zoom": true }
+            },
+            "x2": { "chrom": "chr2", "pos": "start2" },
+            "color": {
+              "field": "chr1",
+              "type": "nominal",
+              "scale": {
+                "scheme": "tableau20",
+                "domain": [
+                  "chr1",
+                  "chr2",
+                  "chr3",
+                  "chr4",
+                  "chr5",
+                  "chr6",
+                  "chr7",
+                  "chr8",
+                  "chr9",
+                  "chr10",
+                  "chr11",
+                  "chr12",
+                  "chr13",
+                  "chr14",
+                  "chr15",
+                  "chr16",
+                  "chr17",
+                  "chr18",
+                  "chr19",
+                  "chr20",
+                  "chr21",
+                  "chr22",
+                  "chrX",
+                  "chrY"
+                ]
+              }
+            },
+            "size": {
+              "field": "QUAL",
+              "type": "quantitative",
+              "scale": {
+                "type": "log",
+                "range": [0.1, 2.5]
+              }
+            }
+          }
+        },
+        {
+          "height": 30,
+
+          "data": { "url": "segments.tsv" },
+
+          "transform": [
+            {
+              "type": "formula",
+              "expr": "abs(if(datum.baf !== null, datum.baf, 1.0) - 0.5) * 2",
+              "as": "loh"
+            }
+          ],
+
+          "encoding": {
+            "x": {
+              "chrom": "chr",
+              "pos": "startpos",
+              "type": "locus"
+            },
+            "x2": {
+              "chrom": "chr",
+              "pos": "endpos",
+              "offset": 1
+            }
+          },
+
+          "resolve": {
+            "scale": { "color": "independent" }
+          },
+
+          "layer": [
+            {
+              "title": "Copy-number variance",
+              "name": "cnv",
+              "mark": {
+                "type": "rect",
+                "minOpacity": 1.0,
+                "minWidth": 1.0
+              },
+              "transform": [
+                {
+                  "type": "formula",
+                  "expr": "datum.endpos - datum.startpos",
+                  "as": "segment length"
+                }
+              ],
+              "encoding": {
+                "color": {
+                  "type": "quantitative",
+                  "field": "logR",
+                  "scale": {
+                    "type": "symlog",
+                    "domainMin": -3,
+                    "domainMid": 0,
+                    "range": ["#1060f8", "#f6f6f6", "#ff3000"]
+                  }
+                }
+              }
+            },
+            {
+              "title": "Loss of heterozygosity",
+              "name": "loh",
+              "transform": [{ "type": "filter", "expr": "datum.loh >= 0.01" }],
+              "mark": {
+                "type": "rect",
+                "tooltip": null,
+                "minOpacity": 0.4
+              },
+              "encoding": {
+                "y": {
+                  "field": "loh",
+                  "type": "quantitative",
+                  "scale": {
+                    "domain": [0, 1]
+                  },
+                  "axis": null
+                },
+                "color": { "value": "black" },
+                "opacity": {
+                  "expr": "0.12 + 0.09 * datum.loh",
+                  "type": "quantitative",
+                  "scale": { "type": "identity" }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "import": { "url": "../shared/genes.json" }
+    },
+    { "import": { "url": "../shared/cytobands.json" } }
+  ]
+}
