@@ -1,5 +1,6 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://unpkg.com/@genome-spy/core/dist/schema.json",
+
   "description": "Using rect marks to create a bar chart",
   "data": {
     "values": [
@@ -34,7 +35,7 @@
     {
       "mark": { "type": "text", "dy": -9 },
       "encoding": {
-        "text": { "field": "b", "type": "quantitative" }
+        "text": { "field": "b" }
       }
     }
   ]

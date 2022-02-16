@@ -1,4 +1,6 @@
 {
+  "$schema": "https://unpkg.com/@genome-spy/core/dist/schema.json",
+
   "genome": {
     "name": "hg38"
   },
@@ -48,7 +50,7 @@
               }
             ],
             "encoding": {
-              "sample": { "field": "Sample", "type": "nominal" },
+              "sample": { "field": "Sample" },
               "x": {
                 "chrom": "Chromosome",
                 "pos": "Start",
@@ -118,15 +120,6 @@
             "transform": [
               {
                 "type": "regexFold",
-                "ids": [
-                  "CHROM",
-                  "POS",
-                  "REF",
-                  "ALT",
-                  "ID",
-                  "CADD_phred",
-                  "ExonicFunc.refGene"
-                ],
                 "columnRegex": "^(.*)\\.AF$",
                 "asValue": "VAF",
                 "asKey": "sample"
@@ -138,8 +131,7 @@
             ],
             "encoding": {
               "sample": {
-                "field": "sample",
-                "type": "nominal"
+                "field": "sample"
               },
               "x": {
                 "chrom": "CHROM",
@@ -181,8 +173,7 @@
                 "type": "quantitative"
               },
               "semanticScore": {
-                "field": "CADD_phred",
-                "type": "quantitative"
+                "field": "CADD_phred"
               }
             }
           }

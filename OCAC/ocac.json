@@ -1,4 +1,6 @@
 {
+  "$schema": "https://unpkg.com/@genome-spy/core/dist/schema.json",
+
   "description": [
     "High-Grade Serous Ovarian Cancer Associations From OCAC GWAS",
     "Phelan, C. M., Kuchenbaecker, K. B., Tyrer, J. P., Kar, S. P., Lawrenson, K., Winham, S. J., … Pharoah, P. D. P. (2017).",

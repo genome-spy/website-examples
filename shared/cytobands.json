@@ -1,4 +1,6 @@
 {
+  "$schema": "https://unpkg.com/@genome-spy/core/dist/schema.json",
+
   "height": 24,
   "data": { "url": "cytobands.tsv" },
   "transform": [{ "type": "filter", "expr": "!test(/_/, datum.chrom)" }],
@@ -93,8 +95,7 @@
           }
         },
         "text": {
-          "field": "name",
-          "type": "nominal"
+          "field": "name"
         }
       }
     },

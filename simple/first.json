@@ -1,5 +1,6 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://unpkg.com/@genome-spy/core/dist/schema.json",
+
   "data": {
     "url": "sincos.csv"
   },

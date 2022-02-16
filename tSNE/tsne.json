@@ -1,4 +1,6 @@
 {
+  "$schema": "https://unpkg.com/@genome-spy/core/dist/schema.json",
+
   "description": "A miserably failed t-SNE attempt",
 
   "data": {
@@ -51,7 +53,7 @@
         "angle": 5
       },
       "encoding": {
-        "text": { "field": "text", "type": "nominal" }
+        "text": { "field": "text" }
       }
     }
   ]

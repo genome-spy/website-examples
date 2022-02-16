@@ -1,4 +1,6 @@
 {
+  "$schema": "https://unpkg.com/@genome-spy/core/dist/schema.json",
+
   "genome": { "name": "hg19" },
 
   "description": [
@@ -45,13 +47,14 @@
             "type": "nominal"
           },
           "PFI.time": {
+            "type": "quantitative",
             "scale": {
               "type": "sqrt"
             }
           },
           "breaks": {
             "type": "quantitative",
-            "colorScale": {
+            "scale": {
               "scheme": "lightorange"
             },
             "barScale": {},
@@ -86,7 +89,7 @@
                 "axis": null
               },
               "x2": { "chrom": "Chromosome", "pos": "End" },
-              "sample": { "field": "Sample", "type": "nominal" },
+              "sample": { "field": "Sample" },
               "color": {
                 "field": "Segment_Mean",
                 "type": "quantitative",
@@ -196,7 +199,7 @@
             },
 
             "encoding": {
-              "sample": { "field": "Sample", "type": "nominal" },
+              "sample": { "field": "Sample" },
               "x": {
                 "chrom": "Chromosome",
                 "pos": "Start_Position",
@@ -237,12 +240,8 @@
                 }
               },
               "size": { "value": 300 },
-              "gradientStrength": {
-                "value": 0.3
-              },
               "semanticScore": {
-                "field": "CADD_PHRED",
-                "type": "quantitative"
+                "field": "CADD_PHRED"
               }
             }
           }

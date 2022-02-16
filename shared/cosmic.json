@@ -1,4 +1,6 @@
 {
+  "$schema": "https://unpkg.com/@genome-spy/core/dist/schema.json",
+
   "name": "cosmic",
   "title": "COSMIC Cancer Gene Census",
   "description": "COSMIC Cancer Gene Cencus, https://cancer.sanger.ac.uk/census",

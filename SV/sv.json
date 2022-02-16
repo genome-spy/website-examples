@@ -1,4 +1,6 @@
 {
+  "$schema": "https://unpkg.com/@genome-spy/core/dist/schema.json",
+
   "description": [
     "Structural variation and segmented copy numbers called using GRIDSS and GATK",
     "Unpublished and anonymized data"
@@ -7,8 +9,6 @@
   "genome": { "name": "hg38" },
 
   "resolve": { "scale": { "x": "shared" } },
-
-  "comment": "TODO, feet: https://www.nature.com/articles/s41586-019-1913-9",
 
   "concat": [
     {

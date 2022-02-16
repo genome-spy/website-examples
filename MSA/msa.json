@@ -1,4 +1,6 @@
 {
+  "$schema": "https://unpkg.com/@genome-spy/core/dist/schema.json",
+
   "description": [
     "16SRNA_Deino_87seq",
     "Data source: https://www.ncbi.nlm.nih.gov/tools/msaviewer/tutorial1/"
@@ -68,7 +70,7 @@
           "title": "Information"
         },
         "y2": { "field": "_y1" },
-        "text": { "field": "sequence", "type": "nominal", "title": "base" }
+        "text": { "field": "sequence", "title": "base" }
       },
       "layer": [
         {
@@ -114,7 +116,7 @@
           },
           "encoding": {
             "color": { "value": "black" },
-            "text": { "field": "sequence", "type": "nominal", "title": "base" }
+            "text": { "field": "sequence", "title": "base" }
           }
         }
       ]

@@ -1,4 +1,6 @@
 {
+  "$schema": "https://unpkg.com/@genome-spy/core/dist/schema.json",
+
   "description": [
     "ASCAT segmentation and copy number estimates, sample: S96",
     "Loo P Van, Nordgard SH, Lingjærde OC, et al.",

@@ -1,4 +1,6 @@
 {
+  "$schema": "https://unpkg.com/@genome-spy/core/dist/schema.json",
+
   "name": "geneAnnotations",
 
   "description": [
@@ -124,7 +126,7 @@
           "encoding": {
             "x": { "field": "_start", "type": "locus", "axis": null },
             "x2": { "field": "_end" },
-            "search": { "field": "symbol", "type": "nominal" }
+            "search": { "field": "symbol" }
           }
         }
       ]
@@ -166,7 +168,7 @@
               "field": "_centroid",
               "type": "locus"
             },
-            "text": { "field": "symbol", "type": "nominal" }
+            "text": { "field": "symbol" }
           }
         },
         {
