@@ -10,8 +10,11 @@
 
   "resolve": { "scale": { "x": "shared" } },
 
-  "concat": [
+  "vconcat": [
     {
+      "name": "samples",
+      "title": "Samples",
+
       "resolve": {
         "scale": { "color": "independent" }
       },
@@ -64,6 +67,9 @@
       },
 
       "spec": {
+        "name": "genomic-data",
+        "title": "Genomic data",
+
         "resolve": {
           "scale": { "color": "independent" }
         },
@@ -71,8 +77,10 @@
         "layer": [
           {
             "name": "cnv",
-
             "title": "Copy number variation",
+
+            "configurableVisibility": true,
+
             "data": {
               "url": "segments.tsv"
             },
@@ -102,7 +110,8 @@
 
             "aggregateSamples": [
               {
-                "name": "cnvSummary",
+                "name": "cnv-summary",
+                "title": "G score (summarized copy-numbers)",
                 "height": 50,
                 "transform": [],
                 "encoding": {
@@ -135,8 +144,7 @@
                       "type": "rect",
                       "minOpacity": 1,
                       "minWidth": 0,
-                      "tooltip": null,
-                      "dynamicData": true
+                      "tooltip": null
                     },
                     "encoding": {
                       "color": { "value": "#e45756" }
@@ -163,8 +171,7 @@
                       "type": "rect",
                       "minOpacity": 1,
                       "minWidth": 0,
-                      "tooltip": null,
-                      "dynamicData": true
+                      "tooltip": null
                     },
                     "encoding": {
                       "color": { "value": "#4c78a8" }
@@ -176,6 +183,9 @@
           },
           {
             "name": "mutations",
+            "title": "Point mutations and indels",
+
+            "configurableVisibility": true,
 
             "data": {
               "url": "mutations.tsv"
@@ -250,10 +260,11 @@
     },
     {
       "name": "dummyAxis",
+      "title": "Genome axis",
       "height": { "grow": 0 },
       "data": { "values": [] },
       "mark": "rect",
-      "padding": { "top": -5 },
+      "padding": { "top": -5, "bottom": 50 },
       "encoding": {
         "x": {
           "chrom": "chr",
