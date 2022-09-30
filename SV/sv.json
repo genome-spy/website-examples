@@ -10,12 +10,12 @@
 
   "resolve": { "scale": { "x": "shared" } },
 
-  "concat": [
+  "vconcat": [
     {
       "spacing": 0,
       "resolve": { "scale": { "x": "shared" } },
 
-      "concat": [
+      "vconcat": [
         {
           "data": { "url": "sv.tsv" },
 
