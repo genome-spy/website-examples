@@ -55,7 +55,7 @@
                 "chrom": "Chromosome",
                 "pos": "Start",
                 "type": "locus",
-                "axis": null
+                "axis": {}
               },
               "x2": { "chrom": "Chromosome", "pos": "End", "offset": 1 }
             },
@@ -178,25 +178,6 @@
             }
           }
         ]
-      }
-    },
-
-    {
-      "name": "dummyAxis",
-      "height": { "grow": 0 },
-      "data": { "values": [] },
-      "mark": "rect",
-      "padding": { "top": -5 },
-      "encoding": {
-        "x": {
-          "chrom": "chr",
-          "pos": "pos",
-          "type": "locus",
-          "title": null,
-          "axis": {
-            "domain": false
-          }
-        }
       }
     },
 
