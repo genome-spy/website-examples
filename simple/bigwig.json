@@ -1,0 +1,82 @@
+{
+  "$schema": "https://unpkg.com/@genome-spy/core/dist/schema.json",
+
+  "description": [
+    "GC content: One dataset, two visual representations.",
+    "The data are loaded lazily as the user zooms in and out.",
+    "The scale domains of the y and color channels are adjusted dynamically."
+  ],
+
+  "genome": { "name": "hg38" },
+
+  "data": {
+    "lazy": {
+      "type": "bigwig",
+      "url": "https://data.genomespy.app/genomes/hg38/hg38.gc5Base.bw",
+      "pixelsPerBin": 1
+    }
+  },
+
+  "encoding": {
+    "x": {
+      "chrom": "chrom",
+      "pos": "start",
+      "type": "locus"
+    },
+    "x2": {
+      "chrom": "chrom",
+      "pos": "end"
+    }
+  },
+
+  "resolve": { "axis": { "x": "shared" } },
+
+  "vconcat": [
+    {
+      "height": 140,
+      "view": { "stroke": "lightgray" },
+
+      "encoding": {
+        "y": {
+          "field": "score",
+          "type": "quantitative",
+          "scale": {
+            "nice": true
+          },
+          "axis": {
+            "title": "GC (%)",
+            "grid": true,
+            "gridDash": [2, 2],
+            "maxExtent": 35
+          }
+        }
+      },
+      "mark": {
+        "type": "rect",
+        "minWidth": 0.5,
+        "minOpacity": 1,
+        "tooltip": null
+      }
+    },
+    {
+      "height": 80,
+      "view": { "stroke": "lightgray" },
+
+      "encoding": {
+        "color": {
+          "field": "score",
+          "type": "quantitative",
+          "scale": {
+            "zero": false
+          }
+        }
+      },
+      "mark": {
+        "type": "rect",
+        "minWidth": 0.5,
+        "minOpacity": 1,
+        "tooltip": null
+      }
+    }
+  ]
+}
