@@ -98,6 +98,11 @@
       ]
     },
     {
+      "height": { "step": 13 },
+      "viewportHeight": "container",
+
+      "view": { "stroke": "lightgray" },
+
       "encoding": {
         "x": { "field": "pos", "type": "index" }
       },
