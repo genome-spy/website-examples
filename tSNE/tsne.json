@@ -32,8 +32,7 @@
       },
       "mark": {
         "type": "point",
-        "geometricZoomBound": 8.5,
-        "tooltip": null
+        "geometricZoomBound": 8.5
       }
     },
     {
