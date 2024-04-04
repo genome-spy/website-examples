@@ -170,7 +170,14 @@
               },
               "size": {
                 "field": "VAF",
-                "type": "quantitative"
+                "type": "quantitative",
+                "scale": {
+                  "domain": [0, 1],
+                  "range": [
+                    { "expr": "0" },
+                    { "expr": "pow(clamp(height * 0.65, 2, 18), 2)" }
+                  ]
+                }
               },
               "semanticScore": {
                 "field": "CADD_phred"
