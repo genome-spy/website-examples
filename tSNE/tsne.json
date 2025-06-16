@@ -26,13 +26,14 @@
   "layer": [
     {
       "encoding": {
-        "size": { "value": 60 },
         "color": { "field": "sample", "type": "nominal" },
         "opacity": { "value": 0.7 }
       },
       "mark": {
         "type": "point",
-        "geometricZoomBound": 8.5
+        "size": {
+          "expr": "min(0.1 * zoomLevel * sqrt(zoomLevel), 200) * (width * height / (500 * 500))"
+        }
       }
     },
     {
