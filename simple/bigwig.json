@@ -9,6 +9,8 @@
 
   "assembly": "hg38",
 
+  "resolve": { "axis": { "x": "shared" } },
+
   "data": {
     "lazy": {
       "type": "bigwig",
