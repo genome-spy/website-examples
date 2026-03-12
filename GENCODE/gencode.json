@@ -3,11 +3,7 @@
 
   "description": "GENCODE v43, GRCh38.p13",
 
-  "genome": { "name": "hg38" },
-
-  "resolve": {
-    "scale": { "x": "shared" }
-  },
+  "assembly": "hg38",
 
   "vconcat": [
     {
@@ -25,8 +21,7 @@
         "lazy": {
           "type": "gff3",
           "url": "https://data.genomespy.app/sample-data/gencode.v43.annotation.sorted.gff3.gz",
-          "windowSize": 2000000,
-          "debounceDomainChange": 300
+          "windowSize": 2000000
         }
       },
 

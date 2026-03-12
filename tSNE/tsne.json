@@ -4,9 +4,9 @@
   "description": "A miserably failed t-SNE attempt",
 
   "data": {
-    "url": "tsne.csv",
+    "url": "tsne.parquet",
     "format": {
-      "parse": { "sample": "string", "x": "number", "y": "number" }
+      "type": "parquet"
     }
   },
 

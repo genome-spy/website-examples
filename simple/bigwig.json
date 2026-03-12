@@ -7,7 +7,7 @@
     "The scale domains of the y and color channels are adjusted dynamically."
   ],
 
-  "genome": { "name": "hg38" },
+  "assembly": "hg38",
 
   "data": {
     "lazy": {
@@ -28,8 +28,6 @@
       "pos": "end"
     }
   },
-
-  "resolve": { "axis": { "x": "shared" } },
 
   "vconcat": [
     {

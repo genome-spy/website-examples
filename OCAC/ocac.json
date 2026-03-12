@@ -8,11 +8,7 @@
     "Nature Genetics, 49(5), 680–691. https://doi.org/10.1038/ng.3826"
   ],
 
-  "genome": {
-    "name": "hg38"
-  },
-
-  "resolve": { "scale": { "x": "shared" } },
+  "assembly": "hg38",
 
   "vconcat": [
     {
