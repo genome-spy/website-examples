@@ -188,7 +188,6 @@
       }
     },
 
-    { "import": { "url": "../shared/genes.json" } },
-    { "import": { "url": "../shared/cosmic.json" } }
+    { "import": { "url": "../shared/genes.json" } }
   ]
 }

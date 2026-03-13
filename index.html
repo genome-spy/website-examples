@@ -11,17 +11,14 @@
     </head>
 
     <body>
-        <script
-            type="text/javascript"
-            src="https://cdn.jsdelivr.net/npm/@genome-spy/app@0.73.x/dist/index.js"
-        ></script>
+        <script type="module">
+            import { embed } from "https://cdn.jsdelivr.net/npm/@genome-spy/app@0.73.x/dist/index.es.js";
 
-        <script>
             const specUrl = new URLSearchParams(window.location.search).get(
                 "spec"
             );
             if (specUrl) {
-                genomeSpyApp.embed(document.body, specUrl);
+                embed(document.body, specUrl);
             } else {
                 document.body.innerHTML = `
                 <p style="color: firebrick">No 'spec' url parameter defined!</p>
