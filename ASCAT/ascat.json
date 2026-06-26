@@ -8,9 +8,7 @@
     "Proc Natl Acad Sci. 2010;107(39):16910-16915. doi:10.1073/pnas.1009843107"
   ],
 
-  "genome": {
-    "name": "hg18"
-  },
+  "assembly": "hg18",
 
   "data": { "url": "segments_S96.tsv" },
 
@@ -90,7 +88,8 @@
                   "scale": {
                     "domain": [0, 6, 16],
                     "range": ["#f06850", "#f06850", "#5F0F0F"]
-                  }
+                  },
+                  "legend": null
                 }
               }
             }

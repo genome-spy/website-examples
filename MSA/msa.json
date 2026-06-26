@@ -32,6 +32,10 @@
     }
   },
 
+  "scales": {
+    "x": {}
+  },
+
   "resolve": {
     "scale": { "x": "shared" },
     "axis": { "x": "independent" }

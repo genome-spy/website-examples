@@ -11,9 +11,7 @@
   "assembly": "hg38",
 
   "vconcat": [
-    {
-      "import": { "url": "../shared/cytobands.json" }
-    },
+    { "import": { "url": "../shared/cytobands.json" } },
     {
       "layer": [
         {
@@ -35,15 +33,9 @@
         },
         {
           "data": {
-            "url": "ocac_serous_hg_hg38.tsv",
+            "url": "ocac_serous_hg_hg38.parquet",
             "format": {
-              "parse": {
-                "chr": "string",
-                "position": "integer",
-                "ocac_serous_hg_pvalue": "number",
-                "oncoarray_name": "string",
-                "icogs_snp_name": "string"
-              }
+              "type": "parquet"
             }
           },
 
@@ -69,7 +61,8 @@
             "stroke": "black",
             "strokeWidth": 0.7,
             "fillOpacity": 0.6,
-            "strokeOpacity": 0.8
+            "strokeOpacity": 0.8,
+            "clip": true
           },
 
           "encoding": {
@@ -83,7 +76,7 @@
               "type": "quantitative",
               "title": "-log10(p)",
               "scale": {
-                "domain": [0, 50]
+                "domain": { "expr": "[max(0, (2 / zoomLevel) - 0.1), 50]" }
               }
             },
             "color": {
@@ -113,8 +106,10 @@
         }
       ]
     },
-    {
-      "import": { "url": "../shared/genes.json" }
-    }
-  ]
+    { "import": { "url": "../shared/genes.json" } }
+  ],
+
+  "config": {
+    "legend": { "disable": true }
+  }
 }

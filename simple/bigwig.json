@@ -9,7 +9,10 @@
 
   "assembly": "hg38",
 
-  "resolve": { "axis": { "x": "shared" } },
+  "resolve": {
+    "axis": { "x": "shared" },
+    "legend": { "color": "shared" }
+  },
 
   "data": {
     "lazy": {
@@ -59,7 +62,7 @@
       }
     },
     {
-      "height": 80,
+      "height": 60,
       "view": { "stroke": "lightgray" },
 
       "encoding": {
@@ -68,7 +71,8 @@
           "type": "quantitative",
           "scale": {
             "zero": false
-          }
+          },
+          "legend": { "orient": "right", "titleOrient": "top" }
         }
       },
       "mark": {
@@ -78,5 +82,8 @@
         "tooltip": null
       }
     }
-  ]
+  ],
+  "config": {
+    "legend": { "offset": 10, "titlePadding": 10 }
+  }
 }

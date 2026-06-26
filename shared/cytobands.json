@@ -1,9 +1,37 @@
 {
   "$schema": "https://unpkg.com/@genome-spy/core/dist/schema.json",
 
+  "name": "ideogram-track",
+  "title": {
+    "text": "Chromosome Ideogram",
+    "style": "track-title",
+    "reserve": false
+  },
+
+  "description": "Chromosome ideogram with cytoband annotations.",
+
+  "visible": true,
+
+  "view": {
+    "stroke": "black"
+  },
+
   "height": 24,
   "data": { "url": "cytobands.tsv" },
-  "transform": [{ "type": "filter", "expr": "!test(/_/, datum.chrom)" }],
+  "transform": [
+    { "type": "filter", "expr": "!test(/_/, datum.chrom)" },
+    {
+      "type": "regexExtract",
+      "field": "chrom",
+      "regex": "^chr(.*)$",
+      "as": "chromNumber"
+    },
+    {
+      "type": "formula",
+      "expr": "datum.chromNumber + datum.name",
+      "as": "fullName"
+    }
+  ],
   "encoding": {
     "x": {
       "chrom": "chrom",
@@ -20,6 +48,7 @@
   },
   "layer": [
     {
+      "name": "cytobands-rects",
       "title": "Cytoband",
       "mark": "rect",
       "encoding": {
@@ -47,15 +76,12 @@
               "#338833",
               "#000000"
             ]
-          }
+          },
+          "legend": null
         },
-        "squeeze": {
-          "expr": "datum.gieStain == 'acen' ? (test(/^p/, datum.name) ? 'p' : 'q') : null",
-          "type": "nominal",
-          "scale": {
-            "domain": ["p", "q"],
-            "range": ["right", "left"]
-          }
+        "search": {
+          "field": "fullName",
+          "description": "Combined chromosome number + chromosomal band. Useful for locus search, e.g. '1p36.33'."
         }
       }
     },
@@ -92,10 +118,12 @@
               "white",
               "white"
             ]
-          }
+          },
+          "legend": null
         },
         "text": {
-          "field": "name"
+          "field": "name",
+          "type": "nominal"
         }
       }
     },

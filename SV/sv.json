@@ -6,7 +6,7 @@
     "Unpublished and anonymized data"
   ],
 
-  "genome": { "name": "hg38" },
+  "assembly": "hg38",
 
   "resolve": { "scale": { "x": "shared" } },
 
@@ -87,7 +87,8 @@
                   "chrX",
                   "chrY"
                 ]
-              }
+              },
+              "legend": null
             },
             "size": {
               "field": "QUAL",
@@ -95,7 +96,8 @@
               "scale": {
                 "type": "log",
                 "range": [0.1, 2.5]
-              }
+              },
+              "legend": { "orient": "top-right", "titleOrient": "top" }
             }
           }
         },
@@ -154,7 +156,8 @@
                     "domainMin": -3,
                     "domainMid": 0,
                     "range": ["#1060f8", "#f6f6f6", "#ff3000"]
-                  }
+                  },
+                  "legend": null
                 }
               }
             },
@@ -178,9 +181,10 @@
                 },
                 "color": { "value": "black" },
                 "opacity": {
-                  "expr": "0.12 + 0.09 * datum.loh",
+                  "field": "loh",
                   "type": "quantitative",
-                  "scale": { "type": "identity" }
+                  "scale": { "domain": [0, 1], "range": [0.1, 0.2] },
+                  "legend": null
                 }
               }
             }

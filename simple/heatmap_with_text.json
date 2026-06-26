@@ -33,7 +33,8 @@
           "type": "quantitative",
           "scale": {
             "scheme": "viridis"
-          }
+          },
+          "legend": { "orient": "right", "titleOrient": "top" }
         }
       }
     },
@@ -55,7 +56,8 @@
             "type": "threshold",
             "domain": [0],
             "range": ["white", "black"]
-          }
+          },
+          "legend": null
         }
       }
     },

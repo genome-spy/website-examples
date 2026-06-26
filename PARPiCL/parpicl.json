@@ -1,9 +1,7 @@
 {
-  "$schema": "https://unpkg.com/@genome-spy/core/dist/schema.json",
+  "$schema": "https://unpkg.com/@genome-spy/app/dist/schema.json",
 
-  "genome": {
-    "name": "hg38"
-  },
+  "assembly": "hg38",
 
   "specId": "ParpiCL",
 
@@ -23,10 +21,21 @@
 
     {
       "samples": {
-        "data": {
-          "url": "samples.tsv"
+        "identity": {
+          "data": { "url": "samples.tsv" }
         }
       },
+      "metadata": {
+        "sources": [
+          {
+            "backend": {
+              "backend": "data",
+              "data": { "url": "samples.tsv" }
+            }
+          }
+        ]
+      },
+
       "spec": {
         "layer": [
           {
@@ -96,10 +105,12 @@
                 "encoding": {
                   "y": { "field": "loh", "type": "quantitative", "axis": null },
                   "color": { "value": "black" },
+
                   "opacity": {
-                    "expr": "0.12 + 0.09 * datum.loh",
+                    "field": "loh",
                     "type": "quantitative",
-                    "scale": { "type": "identity" }
+                    "scale": { "domain": [0, 1], "range": [0.1, 0.2] },
+                    "legend": null
                   }
                 }
               }
@@ -184,7 +195,14 @@
               }
             }
           }
-        ]
+        ],
+
+        "config": {
+          "legendTrack": {
+            "disable": false,
+            "style": null
+          }
+        }
       }
     },
 
