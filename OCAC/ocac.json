@@ -13,6 +13,12 @@
   "vconcat": [
     { "import": { "url": "../shared/cytobands.json" } },
     {
+      "scales": {
+        "y": {
+          "domain": { "expr": "[max(0, (2 / zoomLevel()) - 0.1), 50]" }
+        }
+      },
+
       "layer": [
         {
           "data": { "values": [{ "y": 4 }, { "y": 7 }] },
@@ -74,10 +80,7 @@
             "y": {
               "field": "minusLogP",
               "type": "quantitative",
-              "title": "-log10(p)",
-              "scale": {
-                "domain": { "expr": "[max(0, (2 / zoomLevel) - 0.1), 50]" }
-              }
+              "title": "-log10(p)"
             },
             "color": {
               "expr": "!!(datum.oncoarray_name || datum.icogs_snp_name)",
