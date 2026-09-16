@@ -1,0 +1,261 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/npm/@genome-spy/core/dist/schema.json",
+  "description": "One haplotype: inferred CN over raw coverage, with masks and independent depth axis.",
+
+  "height": { "grow": 1 },
+
+  "params": [
+    {
+      "name": "hp",
+      "value": "HP1"
+    },
+    {
+      "name": "ink",
+      "value": "firebrick"
+    },
+    {
+      "name": "binInk",
+      "value": "#cd6f6f",
+      "description": "Lighter haplotype colour for raw coverage bins; inferred CN uses ink."
+    },
+    {
+      "name": "cnHorizontalCursor",
+      "persist": false,
+      "ruler": {
+        "disabled": { "expr": "!showRuler" },
+        "encodings": ["y"],
+        "extent": "view",
+        "display": "line",
+        "mark": {
+          "stroke": "#6b7c85",
+          "strokeWidth": 1,
+          "strokeDash": [3, 3],
+          "opacity": {
+            "expr": "rulerOpacity"
+          }
+        }
+      }
+    }
+  ],
+  "title": {
+    "text": {
+      "expr": "hp + ' | copy number + binned read depth'"
+    }
+  },
+  "layer": [
+    {
+      "name": "cn-unavailable",
+      "data": {
+        "url": { "expr": "dataUrlPrefix + 'unavailable-cn.tsv'" }
+      },
+      "mark": {
+        "type": "rect",
+        "color": "#edf0f2"
+      },
+      "encoding": {
+        "x": {
+          "chrom": "chrom",
+          "pos": "start",
+          "type": "locus",
+          "band": 0
+        },
+        "x2": {
+          "chrom": "chrom",
+          "pos": "end",
+          "band": 0
+        },
+        "tooltip": [
+          {
+            "field": "status",
+            "title": "Availability"
+          }
+        ]
+      }
+    },
+    {
+      "name": "cn-blacklist",
+      "import": {
+        "url": "blacklist.json"
+      }
+    },
+    {
+      "name": "cn-baseline",
+      "data": {
+        "values": [{}]
+      },
+      "mark": {
+        "type": "rule",
+        "color": "#d8e0e1",
+        "clip": false,
+        "y": 0
+      }
+    },
+    {
+      "name": "coverage-bins",
+      "data": {
+        "url": { "expr": "dataUrlPrefix + 'coverage-baf.tsv'" }
+      },
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.coverageStatus == 'reported'"
+        },
+        {
+          "type": "formula",
+          "expr": "hp == 'HP1' ? datum.hp1 : datum.hp2",
+          "as": "depth"
+        }
+      ],
+      "mark": {
+        "type": "point",
+        "size": {
+          "expr": "min(pow(zoomLevel(), 1.5) + 2, 100)"
+        },
+        "opacity": 0.25,
+        "strokeWidth": 0,
+        "clip": true
+      },
+      "encoding": {
+        "color": {
+          "condition": {
+            "param": "svRegion",
+            "empty": true,
+            "value": {
+              "expr": "binInk"
+            }
+          },
+          "value": "#cbd2d6"
+        },
+        "x": {
+          "chrom": "chrom",
+          "pos": "start",
+          "type": "locus",
+          "band": 0
+        },
+        "x2": {
+          "chrom": "chrom",
+          "pos": "end",
+          "band": 0
+        },
+        "y": {
+          "field": "depth",
+          "type": "quantitative",
+          "scale": {
+            "type": "linear",
+            "nice": false,
+            "zero": false,
+            "domainTransition": false,
+            "clamp": false,
+            "domain": {
+              "expr": "[cnDomain[0] * singleCopyDepth + depthOffset, cnDomain[1] * singleCopyDepth + depthOffset]"
+            }
+          },
+          "axis": {
+            "orient": "right",
+            "title": "Read depth",
+            "tickCount": 4
+          }
+        },
+        "tooltip": [
+          {
+            "expr": "hp",
+            "title": "Chromosome-local haplotype"
+          },
+          {
+            "field": "depth",
+            "title": "Reported depth",
+            "format": ".2f"
+          },
+          {
+            "title": "Resolution",
+            "expr": "\"50 kb bins; terminal bins truncated to GRCh38\""
+          }
+        ]
+      },
+      "resolve": {
+        "scale": {
+          "y": "excluded"
+        }
+      }
+    },
+    {
+      "name": "cn-segments",
+      "data": {
+        "url": { "expr": "dataUrlPrefix + 'copy-number-segments.tsv'" }
+      },
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.haplotype == hp"
+        }
+      ],
+      "mark": {
+        "type": "rule",
+        "size": 3,
+        "minLength": 1,
+        "clip": "x"
+      },
+      "encoding": {
+        "color": {
+          "condition": {
+            "param": "svRegion",
+            "empty": true,
+            "value": {
+              "expr": "ink"
+            }
+          },
+          "value": "#8f999e"
+        },
+        "x": {
+          "chrom": "chrom",
+          "pos": "start",
+          "type": "locus",
+          "band": 0
+        },
+        "x2": {
+          "chrom": "chrom",
+          "pos": "end",
+          "band": 0
+        },
+        "y": {
+          "field": "copyNumber",
+          "type": "quantitative",
+          "axis": {
+            "title": "Copies",
+            "tickCount": 4,
+            "tickMinStep": 1
+          }
+        },
+        "tooltip": [
+          {
+            "field": "haplotype",
+            "title": "Chromosome-local haplotype"
+          },
+          {
+            "field": "copyNumber",
+            "title": "Inferred copies"
+          },
+          {
+            "field": "confidence",
+            "title": "Wakhan CN confidence",
+            "format": ".3f"
+          },
+          {
+            "field": "medianCoverage",
+            "title": "Segment median depth",
+            "format": ".2f"
+          },
+          {
+            "field": "breakpointIds",
+            "title": "Source SV annotations"
+          }
+        ]
+      }
+    }
+  ],
+  "resolve": {
+    "axis": {
+      "y": "independent"
+    }
+  }
+}

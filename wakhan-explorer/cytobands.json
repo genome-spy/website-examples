@@ -1,0 +1,115 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/npm/@genome-spy/core/dist/schema.json",
+  "description": "GRCh38 chromosome bands, with labels that appear when their intervals have room.",
+  "name": "cytobands",
+  "height": 16,
+  "data": {
+    "url": { "expr": "dataUrlPrefix + 'cytobands.tsv'" }
+  },
+  "encoding": {
+    "x": {
+      "chrom": "chrom",
+      "pos": "start",
+      "type": "locus",
+      "band": 0
+    },
+    "x2": {
+      "chrom": "chrom",
+      "pos": "end",
+      "band": 0
+    }
+  },
+  "resolve": {
+    "scale": {
+      "color": "independent"
+    }
+  },
+  "layer": [
+    {
+      "name": "cytoband-bands",
+      "mark": {
+        "type": "rect",
+        "minWidth": 0.3
+      },
+      "encoding": {
+        "color": {
+          "field": "stain",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "gneg",
+              "gpos25",
+              "gpos50",
+              "gpos75",
+              "gpos100",
+              "acen",
+              "gvar",
+              "stalk"
+            ],
+            "range": [
+              "#f3f5f5",
+              "#dce1e3",
+              "#bdc6ca",
+              "#939fa5",
+              "#64747c",
+              "#c3988d",
+              "#e1e5e6",
+              "#d8dddd"
+            ]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {
+            "field": "band",
+            "title": "Cytoband"
+          }
+        ]
+      }
+    },
+    {
+      "name": "cytoband-labels",
+      "mark": {
+        "type": "text",
+        "size": 10,
+        "align": "center",
+        "baseline": "middle",
+        "paddingX": 4,
+        "clip": "x",
+        "tooltip": null
+      },
+      "encoding": {
+        "text": {
+          "field": "band"
+        },
+        "color": {
+          "field": "stain",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "gneg",
+              "gpos25",
+              "gpos50",
+              "gpos75",
+              "gpos100",
+              "acen",
+              "gvar",
+              "stalk"
+            ],
+            "range": [
+              "#263741",
+              "#263741",
+              "#263741",
+              "#263741",
+              "#ffffff",
+              "#263741",
+              "#263741",
+              "#263741"
+            ]
+          },
+          "legend": null
+        }
+      }
+    }
+  ]
+}

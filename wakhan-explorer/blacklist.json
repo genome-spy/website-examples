@@ -1,0 +1,35 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/npm/@genome-spy/core/dist/schema.json",
+  "description": "Reusable Wakhan source-mask layer.",
+  "data": {
+    "url": { "expr": "dataUrlPrefix + 'masked-regions.tsv'" }
+  },
+  "mark": {
+    "type": "rect",
+    "fill": "#f7f9fa",
+    "fillOpacity": 0,
+    "stroke": "#dce2e4",
+    "strokeWidth": 1,
+    "hatch": "diagonal",
+    "clip": "x"
+  },
+  "encoding": {
+    "x": {
+      "chrom": "chrom",
+      "pos": "start",
+      "type": "locus",
+      "band": 0
+    },
+    "x2": {
+      "chrom": "chrom",
+      "pos": "end",
+      "band": 0
+    },
+    "tooltip": [
+      {
+        "field": "status",
+        "title": "Availability"
+      }
+    ]
+  }
+}

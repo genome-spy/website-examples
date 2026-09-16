@@ -1,0 +1,91 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/npm/@genome-spy/core/dist/schema.json",
+  "description": "Whole-genome overview and linked navigation brush.",
+  "name": "overview",
+
+  "resolve": { "scale": { "x": "excluded" } },
+
+  "height": 20,
+  "title": "Genome navigator | double-click, then drag to brush; scroll to resize; drag selection to move",
+  "data": {
+    "lazy": {
+      "type": "axisGenome",
+      "channel": "x"
+    }
+  },
+  "view": {
+    "stroke": "#ccd4d8",
+    "strokeZindex": 10
+  },
+  "encoding": {
+    "x": {
+      "field": "continuousStart",
+      "type": "locus",
+      "scale": {
+        "zoom": false
+      },
+      "axis": null
+    },
+    "x2": {
+      "field": "continuousEnd"
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "rect",
+        "tooltip": null,
+        "clip": true
+      },
+      "encoding": {
+        "color": {
+          "field": "odd",
+          "type": "nominal",
+          "scale": {
+            "domain": [true, false],
+            "range": ["#e4e9ec", "#f7f9fa"]
+          },
+          "legend": null
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "size": 11,
+        "color": "#4a5c68",
+        "paddingX": 2,
+        "tooltip": null
+      },
+      "encoding": {
+        "text": {
+          "field": "name"
+        }
+      }
+    }
+  ],
+  "params": [
+    {
+      "name": "brush",
+      "select": {
+        "type": "interval",
+        "encodings": ["x"],
+        "mark": {
+          "stroke": "#487d91",
+          "strokeWidth": 1.5,
+          "strokeOpacity": 0.85,
+          "fill": "#75adbf",
+          "fillOpacity": 0.02,
+          "shadowBlur": 10,
+          "shadowColor": "#75adbf",
+          "shadowOpacity": 0.5,
+          "zindex": 11,
+          "clip": false
+        },
+        "clear": "dblclick"
+      },
+      "push": "outer",
+      "persist": false
+    }
+  ]
+}

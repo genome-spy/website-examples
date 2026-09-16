@@ -1,0 +1,113 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/npm/@genome-spy/core/dist/schema.json",
+  "description": "Folded BAF bins and reference guides; grey crosses retain zeros with unknown SNP support.",
+  "name": "baf",
+
+  "height": { "grow": 0.7 },
+
+  "title": "Folded BAF | 50 kb means | grey zeros have unknown SNP support",
+  "params": [
+    {
+      "name": "bafHorizontalCursor",
+      "persist": false,
+      "ruler": {
+        "disabled": { "expr": "!showRuler" },
+        "encodings": ["y"],
+        "extent": "view",
+        "display": "line",
+        "mark": {
+          "stroke": "#6b7c85",
+          "strokeWidth": 1,
+          "strokeDash": [3, 3],
+          "opacity": {
+            "expr": "rulerOpacity"
+          }
+        }
+      }
+    }
+  ],
+  "layer": [
+    {
+      "data": {
+        "url": { "expr": "dataUrlPrefix + 'coverage-baf.tsv'" }
+      },
+      "mark": {
+        "type": "point",
+        "size": {
+          "expr": "min(pow(zoomLevel(), 1.5), 100)"
+        },
+        "opacity": 0.25,
+        "strokeWidth": 0,
+        "clip": "x"
+      },
+      "encoding": {
+        "color": {
+          "condition": {
+            "param": "svRegion",
+            "empty": true,
+            "field": "bafStatus",
+            "type": "nominal",
+            "scale": {
+              "type": "ordinal",
+              "domain": [
+                "Zero in source; SNP support unavailable",
+                "Reported bin mean"
+              ],
+              "range": ["#aeb8bd", "#428b81"]
+            },
+            "legend": null
+          },
+          "value": "#cbd2d6"
+        },
+        "shape": {
+          "field": "bafStatus",
+          "type": "nominal",
+          "scale": {
+            "type": "ordinal",
+            "domain": [
+              "Zero in source; SNP support unavailable",
+              "Reported bin mean"
+            ],
+            "range": ["cross", "circle"]
+          },
+          "legend": null
+        },
+        "x": {
+          "chrom": "chrom",
+          "pos": "start",
+          "type": "locus",
+          "band": 0
+        },
+        "x2": {
+          "chrom": "chrom",
+          "pos": "end",
+          "band": 0
+        },
+        "y": {
+          "field": "baf",
+          "type": "quantitative",
+          "scale": {
+            "domain": [0, 0.5]
+          },
+          "axis": {
+            "title": null,
+            "values": [0, 0.25, 0.5],
+            "grid": true,
+            "gridDash": [3, 3]
+          }
+        },
+        "tooltip": [
+          {
+            "field": "baf",
+            "title": "Folded BAF",
+            "format": ".3f"
+          },
+          {
+            "field": "bafStatus",
+            "title": "Interpretation"
+          }
+        ]
+      }
+    }
+  ]
+}

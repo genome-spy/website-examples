@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="data:," />
+<title>HCC1954 · Wakhan × GenomeSpy</title>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background: #f3f5f6;
+        color: #263b48;
+        font:
+            14px/1.5 system-ui,
+            sans-serif;
+    }
+
+    main {
+        max-width: 1600px;
+        margin: 24px auto;
+        padding: 0 30px;
+    }
+
+    header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        font-size: 11px;
+        color: #68818d;
+        font-weight: 650;
+    }
+
+    h1 {
+        margin: 4px 0 5px;
+        font-size: 30px;
+        font-weight: 620;
+        letter-spacing: -0.04em;
+    }
+
+    .meta {
+        color: #6b7e87;
+        font-size: 12px;
+        text-align: right;
+    }
+
+    .subtitle {
+        color: #596e79;
+        margin: 0 0 15px;
+    }
+
+    .semantics {
+        padding: 10px 14px;
+        background: #e8eef1;
+        border-left: 3px solid #7d99a6;
+        font-size: 12px;
+    }
+
+    .hp1 {
+        color: firebrick;
+        font-weight: 650;
+    }
+
+    .hp2 {
+        color: steelblue;
+        font-weight: 650;
+    }
+
+    nav {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        margin: 16px 0 10px;
+        flex-wrap: wrap;
+    }
+
+    button,
+    .source {
+        font: inherit;
+        font-size: 12px;
+        border: 1px solid #ccd7dd;
+        background: white;
+        color: #3b5767;
+        border-radius: 4px;
+        padding: 5px 11px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    button:hover,
+    button:focus-visible {
+        border-color: #3b788f;
+        background: #edf5f8;
+    }
+
+    #visualization-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-left: auto;
+    }
+
+    #genomespy-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    #genomespy-link img {
+        width: 16px;
+        height: 16px;
+    }
+
+    #display-controls .gs-input-binding {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 5px 11px;
+        border: 1px solid #ccd7dd;
+        border-radius: 4px;
+        background: white;
+        color: #3b5767;
+        font-size: 12px;
+    }
+
+    #display-controls label {
+        cursor: pointer;
+    }
+
+    #display-controls input {
+        order: -1;
+        margin: 0;
+        accent-color: #487d91;
+        cursor: pointer;
+    }
+
+    #vis {
+        background: white;
+        border: 1px solid #dbe2e6;
+        border-radius: 5px;
+        padding: 10px;
+        min-height: 720px;
+    }
+
+    footer {
+        column-count: 2;
+        column-gap: 20px;
+        font-size: 11px;
+        color: #6c7e88;
+        margin: 12px 0 24px;
+    }
+
+    footer p {
+        break-inside: avoid-column;
+        margin: 0 0 5px;
+    }
+
+    a {
+        color: #3f7288;
+    }
+
+    @media (max-width: 800px) {
+        main {
+            padding: 0 10px;
+            margin: 12px auto;
+        }
+
+        header {
+            display: block;
+        }
+
+        .meta {
+            text-align: left;
+        }
+
+        footer {
+            column-count: 1;
+        }
+    }
+</style>
+<main>
+    <header>
+        <div>
+            <div class="eyebrow">Wakhan × GenomeSpy / CASTLE</div>
+            <h1>
+                HCC1954
+                <span style="font-weight: 350">— a rearranged genome</span>
+            </h1>
+        </div>
+        <div class="meta">
+            PacBio HiFi · GRCh38<br />Wakhan rank 1 · ploidy 4.57 · cell
+            purity 0.99
+        </div>
+    </header>
+    <p class="subtitle">
+        Follow structural variation from the whole genome into
+        haplotype-specific copy number.
+    </p>
+    <div class="semantics">
+        <span class="hp1">HP1</span> and <span class="hp2">HP2</span> are
+        <strong>chromosome-local haplotypes</strong>. Their labels reset
+        independently on each chromosome; they do not identify a parent.
+        Phasing confidence is unavailable.
+    </div>
+    <nav aria-label="Explore genomic regions">
+        <button data-locus="all">Whole genome</button><button data-locus="chr8">Chromosome 8</button><button
+            data-locus="highcn">HP2 CN 33</button><button data-locus="myc">MYC neighbourhood</button><button
+            data-locus="erbb2">ERBB2 locus</button><button data-locus="chr21">Chromosome 21</button>
+        <div id="visualization-actions" role="group" aria-label="Downloads">
+            <button type="button" data-export="svg">SVG</button>
+            <button type="button" data-export="png">PNG</button>
+            <a id="genomespy-link" class="source" href="https://genomespy.app/" target="_blank"
+                rel="noopener noreferrer"><img alt="" />GenomeSpy</a>
+        </div>
+        <div id="display-controls"></div>
+    </nav>
+    <div id="vis" aria-label="Interactive genomic tracks"></div>
+    <footer>
+        <p>
+            <strong>Reading the tracks.</strong> Solid intervals show
+            inferred CN over read-depth dots. Copies use the left axis;
+            depth uses the calibrated right axis. Paired HP tracks share
+            a CN range that adapts after navigation pauses. Raw bins
+            outside this range are clipped. Hatched centromeric masks
+            contain neither HP depth points nor inferred CN rules.
+        </p>
+        <p>
+            Folded BAF spans 0–0.5. Grey zero bins have unknown SNP
+            support. Plain gray regions lack source CN segments; a
+            coloured interval at zero is a reported zero CN state.
+            The compact LOH track shows Wakhan calls; hatching
+            identifies masked portions that are withheld from the LOH
+            encoding.
+        </p>
+        <p>
+            Wakhan analysed autosomes only. Unphased depth is not
+            available as a trustworthy genome-wide series in this
+            export. CN confidence comes from the BED files and is not
+            phasing confidence.
+        </p>
+        <p>
+            Gene labels show NCG 7.2 canonical cancer drivers and are
+            prioritized by their number of distinct supporting
+            publications. This ranks label placement rather than
+            statistical significance or relevance to HCC1954.
+        </p>
+        <p>
+            This proof of concept uses published analysis artifacts.
+            Coverage and BAF were recovered from literal JSON in the
+            archived Plotly figure because native tables were not
+            included. The visualization could later be adapted to
+            standard Wakhan result bundles.
+        </p>
+        <p>
+            Data: Ahmad Tanveer &amp; Mikhail Kolmogorov,
+            <a href="https://zenodo.org/records/17780982">Wakhan / CASTLE</a>
+            (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>); UCSC cytobands, NCBI RefSeq, and
+            <a href="https://doi.org/10.1186/s13059-022-02607-z">NCG 7.2</a>.
+            <a href="https://github.com/genome-spy/genomespy-dataset-recipes/tree/main/recipes/hcc1954-wakhan-explorer">Dataset
+                recipe and GenomeSpy specification</a>.
+        </p>
+    </footer>
+</main>
+<script type="module">
+    import {
+        embed,
+        favIcon,
+    } from "https://cdn.jsdelivr.net/npm/@genome-spy/core@0.88.1/dist/bundle/index.es.js";
+    const container = document.querySelector("#vis");
+    const api = await embed(
+        container,
+        new URL("explorer.json", location.href).href,
+        {
+            inputBindingContainer:
+                document.querySelector("#display-controls"),
+        }
+    );
+    document.querySelector("#genomespy-link img").src = favIcon;
+
+    for (const button of document.querySelectorAll("button[data-export]")) {
+        button.addEventListener("click", async () => {
+            const format = button.dataset.export;
+            button.disabled = true;
+            button.setAttribute("aria-busy", "true");
+            try {
+                const result = await (format == "svg"
+                    ? api.imageExport.svg({
+                        rasterization: { maxVectorInstances: 5_000 },
+                    })
+                    : api.imageExport.raster({ pixelRatio: 3 }));
+                downloadBlob(
+                    result.blob,
+                    `hcc1954-wakhan-genome.${format}`
+                );
+                if (result.warnings?.length) {
+                    console.warn(result.warnings.join("\n"));
+                }
+            } catch (error) {
+                console.error(
+                    `Unable to export ${format.toUpperCase()}`,
+                    error
+                );
+            } finally {
+                button.disabled = false;
+                button.removeAttribute("aria-busy");
+            }
+        });
+    }
+
+    /**
+     * @param {Blob} blob
+     * @param {string} filename
+     */
+    function downloadBlob(blob, filename) {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = filename;
+        link.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    const scale = api.getScaleResolutionByName("genome");
+    /** @type {Record<string, {chrom: string, pos: number}[]>} */
+    const loci = {
+        all: [
+            { chrom: "chr1", pos: 0 },
+            { chrom: "chrY", pos: 57227415 },
+        ],
+        chr8: [
+            { chrom: "chr8", pos: 0 },
+            { chrom: "chr8", pos: 145138636 },
+        ],
+        highcn: [
+            { chrom: "chr8", pos: 104000000 },
+            { chrom: "chr8", pos: 110000000 },
+        ],
+        myc: [
+            { chrom: "chr8", pos: 120000000 },
+            { chrom: "chr8", pos: 135000000 },
+        ],
+        erbb2: [
+            { chrom: "chr17", pos: 37000000 },
+            { chrom: "chr17", pos: 42000000 },
+        ],
+        chr21: [
+            { chrom: "chr21", pos: 0 },
+            { chrom: "chr21", pos: 46709983 },
+        ],
+    };
+    document.querySelectorAll("button[data-locus]").forEach((button) => {
+        button.addEventListener("click", () =>
+            scale.zoomTo(loci[button.dataset.locus], { duration: 450 })
+        );
+    });
+    window.demo = api;
+</script>
+
+</html>

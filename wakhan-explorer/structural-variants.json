@@ -1,0 +1,424 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/npm/@genome-spy/core/dist/schema.json",
+  "description": "Wakhan-classed SV domes and strand-directed feet, followed by insertions and single breakends.",
+  "name": "sv-tracks",
+  "spacing": 5,
+
+  "resolve": {
+    "scale": { "x": "shared", "color": "shared" },
+    "axis": { "x": "shared" },
+    "legend": { "default": "shared" }
+  },
+
+  "scales": {
+    "color": {
+      "domain": ["DEL", "INV", "INS", "BND", "DUP"],
+      "range": ["#d88033", "#1d8ac2", "#9b60c6", "#677580", "#309c88"]
+    }
+  },
+
+  "vconcat": [
+    {
+      "name": "structural-variants",
+      "height": 110,
+      "title": "Structural variants | Shift-drag a region; hover or click an arc",
+      "data": {
+        "url": { "expr": "dataUrlPrefix + 'sv-links.tsv'" },
+        "format": {
+          "parse": {
+            "genotype": "string",
+            "haplotype": "string",
+            "phaseSet": "string",
+            "variantId": "string",
+            "mateId": "string"
+          }
+        }
+      },
+      "transform": [
+        {
+          "type": "linearizeGenomicCoordinate",
+          "chrom": "chrom1",
+          "pos": "start1",
+          "as": "_x1"
+        },
+        {
+          "type": "linearizeGenomicCoordinate",
+          "chrom": "chrom2",
+          "pos": "start2",
+          "as": "_x2"
+        },
+        {
+          "type": "formula",
+          "expr": "abs(datum._x2 - datum._x1)",
+          "as": "svSpan"
+        },
+        {
+          "type": "identifier"
+        }
+      ],
+      "encoding": {
+        "color": {
+          "field": "svClass",
+          "type": "nominal",
+          "legend": {
+            "title": "Wakhan SV class",
+            "orient": "top",
+            "direction": "horizontal"
+          }
+        }
+      },
+      "layer": [
+        {
+          "name": "sv-feet",
+          "transform": [
+            {
+              "type": "regexFold",
+              "columnRegex": ["^chrom(1|2)$", "^start(1|2)$"],
+              "asValue": ["chrom", "start"],
+              "asKey": "endpoint"
+            },
+            {
+              "type": "formula",
+              "expr": "datum.orientation[datum.endpoint - 1]",
+              "as": "strand"
+            }
+          ],
+          "mark": {
+            "type": "rule",
+            "y": 0,
+            "yOffset": -0.5,
+            "size": 1,
+            "opacity": 0.28,
+            "clip": "x"
+          },
+          "encoding": {
+            "x": {
+              "chrom": "chrom",
+              "pos": "start",
+              "type": "locus",
+              "band": 0
+            },
+            "x2": {
+              "chrom": "chrom",
+              "pos": "start",
+              "band": 0
+            },
+            "xOffset": {
+              "field": "strand",
+              "type": "nominal",
+              "scale": {
+                "name": "svFootOffset",
+                "domain": ["-", "+"],
+                "range": [
+                  {
+                    "expr": "svFootLength"
+                  },
+                  {
+                    "expr": "-svFootLength"
+                  }
+                ],
+                "type": "ordinal"
+              }
+            },
+            "tooltip": [
+              {
+                "field": "variantId",
+                "title": "Original variant ID"
+              },
+              {
+                "field": "svClass",
+                "title": "Wakhan SV class"
+              },
+              {
+                "field": "strand",
+                "title": "Strand"
+              }
+            ]
+          }
+        },
+        {
+          "name": "sv-domes",
+          "mark": {
+            "type": "link",
+            "linkShape": "dome",
+            "arcFadingDistance": {
+              "expr": "[height - 20, height + 20]"
+            },
+            "maxChordLength": 100000000,
+            "yOffset": -4,
+            "y2Offset": 0,
+            "segments": 200,
+            "minPickingSize": 5,
+            "clip": "x"
+          },
+          "encoding": {
+            "order": {
+              "condition": {
+                "test": {
+                  "param": { "or": ["svSelect", "svRegion"] },
+                  "empty": false
+                },
+                "value": 1
+              },
+              "value": 0
+            },
+            "color": {
+              "condition": {
+                "test": {
+                  "param": { "or": ["svSelect", "svRegion"] },
+                  "empty": true
+                },
+                "field": "svClass",
+                "type": "nominal",
+                "legend": null
+              },
+              "value": "#d8dbe0"
+            },
+            "x": {
+              "chrom": "chrom1",
+              "pos": "start1",
+              "type": "locus",
+              "band": 0
+            },
+            "x2": {
+              "chrom": "chrom2",
+              "pos": "start2",
+              "band": 0
+            },
+            "y": {
+              "field": "svSpan",
+              "type": "quantitative",
+              "scale": {
+                "name": "svDomeHeight",
+                "type": "sqrt",
+                "domain": {
+                  "expr": "[0, span(domain('x')) * height / width * 5]"
+                }
+              },
+              "axis": null
+            },
+            "y2": {
+              "value": 0
+            },
+            "tooltip": [
+              {
+                "field": "svClass",
+                "title": "Wakhan SV class"
+              },
+              {
+                "field": "variantId",
+                "title": "Original variant ID"
+              },
+              {
+                "field": "mateId",
+                "title": "Mate ID"
+              },
+              {
+                "field": "orientation",
+                "title": "Strands"
+              },
+              {
+                "field": "haplotype",
+                "title": "Source HP"
+              },
+              {
+                "field": "phaseSet",
+                "title": "Phase set"
+              },
+              {
+                "field": "genotype",
+                "title": "Target genotype"
+              },
+              {
+                "field": "variantReads",
+                "title": "Variant reads"
+              },
+              {
+                "field": "referenceReads",
+                "title": "Reference reads"
+              },
+              {
+                "field": "vaf",
+                "title": "VAF"
+              },
+              {
+                "field": "haplotypeVaf",
+                "title": "Haplotype VAF"
+              },
+              {
+                "field": "detailedType",
+                "title": "Severus detail"
+              }
+            ],
+            "size": {
+              "condition": [
+                {
+                  "param": "svRegion",
+                  "empty": false,
+                  "value": 2
+                },
+                {
+                  "param": "svHover",
+                  "empty": false,
+                  "value": 2.8
+                },
+                {
+                  "param": "svSelect",
+                  "empty": false,
+                  "value": 2.8
+                }
+              ],
+              "value": 1
+            },
+            "opacity": {
+              "condition": [
+                {
+                  "param": "svHover",
+                  "empty": false,
+                  "value": 1
+                },
+                {
+                  "test": {
+                    "param": {
+                      "or": ["svSelect", "svRegion"]
+                    },
+                    "empty": false
+                  },
+                  "value": 0.7
+                }
+              ],
+              "value": { "expr": "min(0.2 * zoomLevel(), 0.4)" }
+            }
+          },
+          "params": [
+            {
+              "name": "svHover",
+              "select": {
+                "type": "point",
+                "on": "pointerover"
+              },
+              "persist": false
+            },
+            {
+              "name": "svSelect",
+              "select": "point",
+              "persist": false
+            }
+          ]
+        }
+      ],
+      "params": [
+        {
+          "name": "svFootLength",
+          "expr": "clamp(7 * 100000000 / span(domain('x')), 1, 7)",
+          "description": "Breakpoint-foot length in pixels: 1 at whole-genome scale, reaching 7 when the viewport spans 100 Mb or less."
+        }
+      ]
+    },
+    {
+      "name": "single-sites",
+      "height": 10,
+      "data": {
+        "url": { "expr": "dataUrlPrefix + 'sv-sites.tsv'" },
+        "format": {
+          "parse": {
+            "genotype": "string",
+            "haplotype": "string",
+            "phaseSet": "string",
+            "variantId": "string",
+            "mateId": "string"
+          }
+        }
+      },
+      "params": [
+        {
+          "name": "svSiteSelect",
+          "select": "point",
+          "persist": false
+        }
+      ],
+      "mark": {
+        "type": "point",
+        "shape": "triangle-up",
+        "size": 18,
+        "opacity": 0.7
+      },
+      "encoding": {
+        "x": {
+          "chrom": "chrom1",
+          "pos": "start1",
+          "type": "locus",
+          "band": 0
+        },
+        "y": {
+          "value": 0.5
+        },
+        "color": {
+          "condition": {
+            "test": {
+              "param": {
+                "or": ["svSiteSelect", "svRegion"]
+              },
+              "empty": true
+            },
+            "field": "svClass",
+            "type": "nominal",
+            "legend": null
+          },
+          "value": "#d0d8db"
+        },
+        "tooltip": [
+          {
+            "field": "svClass",
+            "title": "Wakhan SV class"
+          },
+          {
+            "field": "sourceSvType",
+            "title": "Source SVTYPE"
+          },
+          {
+            "field": "variantId",
+            "title": "Original variant ID"
+          },
+          {
+            "field": "orientation",
+            "title": "Strands"
+          },
+          {
+            "field": "haplotype",
+            "title": "Source HP"
+          },
+          {
+            "field": "phaseSet",
+            "title": "Phase set"
+          },
+          {
+            "field": "genotype",
+            "title": "Target genotype"
+          },
+          {
+            "field": "variantReads",
+            "title": "Variant reads"
+          },
+          {
+            "field": "referenceReads",
+            "title": "Reference reads"
+          },
+          {
+            "field": "vaf",
+            "title": "VAF"
+          },
+          {
+            "field": "haplotypeVaf",
+            "title": "Haplotype VAF"
+          },
+          {
+            "field": "detailedType",
+            "title": "Severus detail"
+          }
+        ]
+      }
+    }
+  ],
+  "config": { "legend": { "symbolOpacity": 1 } }
+}

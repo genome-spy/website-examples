@@ -1,0 +1,80 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/npm/@genome-spy/core/dist/schema.json",
+  "description": "Compact Wakhan segment features, currently loss of heterozygosity.",
+  "name": "segment-features",
+  "height": 12,
+  "title": "Wakhan LOH calls",
+  "encoding": {
+    "x": {
+      "chrom": "chrom",
+      "pos": "start",
+      "type": "locus",
+      "band": 0
+    },
+    "x2": {
+      "chrom": "chrom",
+      "pos": "end",
+      "band": 0
+    }
+  },
+  "layer": [
+    {
+      "name": "loh-unavailable",
+      "data": {
+        "url": { "expr": "dataUrlPrefix + 'unavailable-cn.tsv'" }
+      },
+      "mark": {
+        "type": "rect",
+        "color": "#edf0f2",
+        "clip": "x"
+      },
+      "encoding": {
+        "tooltip": [{ "field": "status", "title": "Availability" }]
+      }
+    },
+    {
+      "name": "loh-blacklist",
+      "import": {
+        "url": "blacklist.json"
+      }
+    },
+    {
+      "name": "loh-segments",
+      "data": {
+        "url": { "expr": "dataUrlPrefix + 'loh-segments.tsv'" }
+      },
+      "mark": {
+        "type": "rect",
+        "opacity": 0.78,
+        "strokeWidth": 0.5,
+        "clip": "x"
+      },
+      "encoding": {
+        "fill": {
+          "condition": {
+            "param": "svRegion",
+            "empty": true,
+            "value": "#6195b9"
+          },
+          "value": "#8f999e"
+        },
+        "stroke": {
+          "condition": {
+            "param": "svRegion",
+            "empty": true,
+            "value": "#417497"
+          },
+          "value": "#768187"
+        },
+        "tooltip": [
+          { "field": "feature", "title": "Feature" },
+          { "field": "basis", "title": "Basis" },
+          {
+            "expr": "'Not supplied by Wakhan LOH BED'",
+            "title": "Confidence"
+          }
+        ]
+      }
+    }
+  ]
+}

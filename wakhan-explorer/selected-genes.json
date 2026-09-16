@@ -1,0 +1,115 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/npm/@genome-spy/core/dist/schema.json",
+  "description": "NCG canonical cancer drivers with evidence-ranked labels and genomic tooltips.",
+  "name": "genes",
+  "title": "NCG canonical cancer drivers | RefSeq / GRCh38",
+  "height": 25,
+  "axes": {
+    "x": {
+      "title": null
+    }
+  },
+  "data": {
+    "url": { "expr": "dataUrlPrefix + 'genes.tsv'" }
+  },
+  "encoding": {
+    "x": {
+      "chrom": "chrom",
+      "pos": "start",
+      "type": "locus",
+      "band": 0
+    },
+    "x2": {
+      "chrom": "chrom",
+      "pos": "end",
+      "band": 0
+    },
+    "tooltip": [
+      {
+        "field": "symbol",
+        "title": "Gene"
+      },
+      {
+        "field": "strand",
+        "title": "Strand"
+      },
+      {
+        "field": "driverRole",
+        "title": "Driver role"
+      },
+      {
+        "field": "supportCount",
+        "title": "Supporting publications",
+        "format": ",d"
+      },
+      {
+        "field": "entrez",
+        "title": "Entrez Gene ID"
+      },
+      {
+        "title": "Annotation",
+        "expr": "\"NCG 7.2 canonical driver; union of curated protein-coding RefSeq transcripts\""
+      }
+    ]
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "rect",
+        "color": "#64747c",
+        "y": 0.1,
+        "y2": 0.3,
+        "minWidth": 2
+      }
+    },
+    {
+      "transform": [
+        {
+          "type": "linearizeGenomicCoordinate",
+          "chrom": "chrom",
+          "pos": "start",
+          "as": "_start"
+        },
+        {
+          "type": "formula",
+          "expr": "datum._start + (datum.end - datum.start) / 2",
+          "as": "_centroid"
+        },
+        {
+          "type": "measureText",
+          "field": "symbol",
+          "fontSize": 10,
+          "as": "_width"
+        },
+        {
+          "type": "filterScoredLabels",
+          "score": "supportCount",
+          "width": "_width",
+          "pos": "_centroid",
+          "padding": 3
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "size": 10,
+        "color": "#425560",
+        "y": 0.75,
+        "yOffset": 2,
+        "align": "center",
+        "tooltip": {
+          "handler": "refseqgene"
+        }
+      },
+      "encoding": {
+        "x": {
+          "field": "_centroid",
+          "type": "locus"
+        },
+        "x2": null,
+        "text": {
+          "field": "symbol"
+        }
+      }
+    }
+  ]
+}

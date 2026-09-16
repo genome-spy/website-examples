@@ -1,0 +1,172 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/npm/@genome-spy/core/dist/schema.json",
+  "description": [
+    "HCC1954 \u00b7 a chromosome-local view",
+    "Matched Wakhan / CASTLE HiFi outputs. HP1 and HP2 are arbitrary within each chromosome, not parental identities."
+  ],
+
+  "assembly": "hg38",
+
+  "padding": {
+    "left": 10,
+    "right": 10,
+    "top": 8,
+    "bottom": 8
+  },
+
+  "width": "container",
+
+  "spacing": 6,
+
+  "params": [
+    {
+      "name": "dataUrlPrefix",
+      "value": "https://data.genomespy.app/datasets/hcc1954-wakhan-explorer/v5/",
+      "description": "Base URL for generated Wakhan data files. Must end with a slash."
+    },
+    {
+      "name": "showRuler",
+      "value": true,
+      "description": "Show a vertical genomic ruler across the linked detail tracks.",
+      "bind": { "input": "checkbox", "name": "Show ruler" }
+    },
+    {
+      "name": "brush"
+    }
+  ],
+  "resolve": {
+    "scale": {
+      "x": "shared"
+    }
+  },
+  "config": {
+    "title": {
+      "anchor": "start",
+      "fontSize": 11,
+      "color": "#364653",
+      "offset": 5
+    },
+    "axis": {
+      "labelFontSize": 10,
+      "titleFontSize": 10,
+      "labelColor": "#6b7c85",
+      "domainColor": "#ced6da",
+      "tickColor": "#ced6da",
+      "gridColor": "#e9edef",
+      "grid": false
+    },
+    "axisLocus": {
+      "chromGrid": true,
+      "chromGridColor": "#e0e6e9",
+      "chromGridOpacity": 0.6,
+      "title": null
+    },
+    "legend": {
+      "labelFontSize": 10,
+      "titleFontSize": 10
+    }
+  },
+  "vconcat": [
+    {
+      "import": {
+        "url": "genome-navigator.json"
+      }
+    },
+    {
+      "name": "detail",
+      "spacing": 10,
+      "params": [
+        {
+          "name": "genomicCursor",
+          "persist": false,
+          "ruler": {
+            "disabled": { "expr": "!showRuler" },
+            "encodings": ["x"],
+            "extent": "container",
+            "display": "line",
+            "mark": {
+              "stroke": "#6b7c85",
+              "strokeWidth": 1,
+              "strokeDash": [3, 3],
+              "opacity": { "expr": "rulerOpacity" }
+            }
+          }
+        },
+        {
+          "name": "svRegion",
+          "persist": false,
+          "select": {
+            "type": "interval",
+            "encodings": ["x"],
+            "extent": "container",
+            "on": "mousedown[event.shiftKey]",
+            "clear": "dblclick",
+            "zoom": false,
+            "mark": {
+              "stroke": "#487d91",
+              "strokeOpacity": 0.65,
+              "strokeWidth": 1,
+              "fill": "#75adbf",
+              "fillOpacity": 0.01,
+              "shadowBlur": 10,
+              "shadowColor": "#75adbf",
+              "shadowOpacity": 0.5,
+              "clip": false,
+              "measure": "inside"
+            }
+          }
+        },
+        {
+          "name": "pointerOverSvRegion",
+          "expr": "genomicCursor.values.x != null && svRegion.intervals.x != null && linearize('x', genomicCursor.values.x) >= svRegion.intervals.x[0] && linearize('x', genomicCursor.values.x) <= svRegion.intervals.x[1]",
+          "description": "Whether the genomic pointer is inside the active SV interval selection. Used to suppress rulers while the brush is under the pointer."
+        },
+        {
+          "name": "rulerOpacity",
+          "expr": "pointerOverSvRegion ? 0 : 0.75",
+          "transition": {
+            "type": "lerp",
+            "halfLife": 50,
+            "epsilon": 0.01
+          },
+          "description": "Shared ruler opacity. A 50 ms half-life and 0.01 snap threshold settle a 0-0.75 change in about 300 ms."
+        }
+      ],
+
+      "resolve": {
+        "scale": { "x": "shared" },
+        "axis": { "x": "shared" }
+      },
+
+      "scales": {
+        "x": {
+          "name": "genome",
+          "domain": {
+            "param": "brush"
+          }
+        }
+      },
+
+      "vconcat": [
+        {
+          "import": { "url": "structural-variants.json" }
+        },
+        {
+          "import": { "url": "copy-number.json" }
+        },
+        {
+          "import": { "url": "baf.json" }
+        },
+        {
+          "import": { "url": "segment-features.json" }
+        },
+        {
+          "import": { "url": "cytobands.json" }
+        },
+        {
+          "import": { "url": "selected-genes.json" }
+        }
+      ]
+    }
+  ]
+}
