@@ -47,7 +47,7 @@
     "RNA-seq": {
       "title": "RNA-seq expression",
       "type": "quantitative",
-      "scale": { "domain": [-2, 0, 2], "range": ["#d6604d", "#f7f7f7", "#2166ac"] },
+      "scale": { "domain": [-2, 0, 2], "range": ["#2166ac", "#f7f7f7", "#d6604d"] },
       "description": "Gene-wise z-scores of log2(mean TPM + 1) across the 12 tissue-stage conditions. Zero is a gene's panel mean; each condition value is shared by both H3K27ac rows."
     },
     "RNA-seq.provenance": { "title": "Provenance", "type": "nominal", "visible": false },
