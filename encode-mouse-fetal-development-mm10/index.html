@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:," />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@genome-spy/app@0.88.1/dist/style.css"
+    />
+    <title>Mouse fetal tissues: H3K27ac and expression</title>
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="module">
+      import { embed } from "https://cdn.jsdelivr.net/npm/@genome-spy/app@0.88.1/dist/index.es.js";
+
+      await embed(document.body, "spec.json");
+    </script>
+  </body>
+</html>

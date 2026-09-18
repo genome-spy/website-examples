@@ -1,0 +1,142 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/npm/@genome-spy/core/dist/schema.json",
+  "name": "genes",
+  "title": { "text": "GENCODE M21 genes", "style": "track-title" },
+  "description": "Strand-directed gene bodies overlapping the four retained regions; coordinates are converted from GTF one-based inclusive to zero-based half-open. At most three packed lanes are shown, and labels are filtered to avoid collisions.",
+  "height": { "step": 22 },
+  "padding": { "top": 8 },
+  "data": { "url": "https://data.genomespy.app/datasets/encode-mouse-fetal-development-mm10/v4/genes.tsv" },
+  "transform": [
+    {
+      "type": "linearizeGenomicCoordinate",
+      "chrom": "chrom",
+      "pos": ["start", "end"],
+      "as": ["_start", "_end"]
+    },
+    {
+      "type": "collect",
+      "sort": {
+        "field": ["_start", "_end", "geneId"],
+        "order": ["ascending", "ascending", "ascending"]
+      }
+    },
+    {
+      "type": "pileup",
+      "start": "_start",
+      "end": "_end",
+      "as": "_lane",
+      "preference": "strand",
+      "preferredOrder": ["-", "+"]
+    },
+    { "type": "filter", "expr": "datum._lane < 3" },
+    {
+      "type": "formula",
+      "expr": "datum.symbol === 'Ascl1' || datum.symbol === 'Ckb' ? 1000000000 : datum.end - datum.start",
+      "as": "_labelPriority"
+    }
+  ],
+  "encoding": {
+    "y": {
+      "field": "_lane",
+      "type": "ordinal",
+      "scale": {
+        "type": "index",
+        "align": 0,
+        "paddingInner": 0.4,
+        "paddingOuter": 0.2,
+        "domain": [0, 3],
+        "reverse": true,
+        "zoom": false
+      },
+      "axis": null
+    }
+  },
+  "layer": [
+    {
+      "name": "gene-bodies",
+      "mark": {
+        "type": "arrow",
+        "style": "arrow-block",
+        "fill": "#cccccc",
+        "stroke": "#555555",
+        "strokeWidth": 1,
+        "size": 7,
+        "yOffset": 8
+      },
+      "encoding": {
+        "x": {
+          "chrom": "chrom",
+          "pos": "start",
+          "type": "locus",
+          "axis": null
+        },
+        "x2": { "chrom": "chrom", "pos": "end" },
+        "direction": {
+          "field": "strand",
+          "type": "nominal",
+          "scale": {
+            "domain": ["+", "-"],
+            "range": ["forward", "reverse"]
+          }
+        },
+        "search": {
+          "field": "symbol",
+          "description": "Mouse gene symbols for looking up GENCODE M21 genes."
+        },
+        "tooltip": [
+          { "field": "symbol", "title": "Gene" },
+          { "field": "geneId", "title": "GENCODE ID" },
+          { "field": "strand", "title": "Strand" }
+        ]
+      }
+    },
+    {
+      "name": "gene-labels",
+      "transform": [
+        {
+          "type": "measureText",
+          "field": "symbol",
+          "as": "_labelWidth",
+          "fontSize": 11
+        },
+        {
+          "type": "filterScoredLabels",
+          "pos": "_start",
+          "pos2": "_end",
+          "asMidpoint": "_labelPosition",
+          "score": "_labelPriority",
+          "width": "_labelWidth",
+          "lane": "_lane",
+          "padding": 6
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "size": 11,
+        "color": "#202020",
+        "yOffset": -2,
+        "baseline": "middle",
+        "align": "center",
+        "clip": true
+      },
+      "encoding": {
+        "x": { "field": "_labelPosition", "type": "locus", "axis": null },
+        "text": { "field": "symbol", "type": "nominal" },
+        "tooltip": [
+          { "field": "symbol", "title": "Gene" },
+          { "field": "geneId", "title": "GENCODE ID" },
+          { "field": "strand", "title": "Strand" }
+        ]
+      }
+    }
+  ],
+  "config": {
+    "axis": {
+      "grid": false,
+      "chromGrid": false,
+      "labels": false,
+      "ticks": false,
+      "title": null
+    }
+  }
+}

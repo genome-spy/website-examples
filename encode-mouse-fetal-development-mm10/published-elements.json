@@ -1,0 +1,70 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/npm/@genome-spy/core/dist/schema.json",
+
+  "name": "published-elements",
+  "title": { "text": "Gorkin et al. elements", "style": "track-title" },
+  "description": "Tissue-colored intervals are reporter-tested candidates; a black outline marks replicated computational enhancer-gene predictions. Hover for the evidence type and target status.",
+
+  "height": 20,
+
+  "data": { "url": "https://data.genomespy.app/datasets/encode-mouse-fetal-development-mm10/v4/elements.tsv" },
+
+  "layer": [
+    {
+      "mark": {
+        "type": "rect",
+        "cornerRadius": 2,
+        "minWidth": 2,
+        "clip": "x",
+        "stroke": "black"
+      },
+      "encoding": {
+        "x": {
+          "chrom": "chrom",
+          "pos": "start",
+          "type": "locus",
+          "axis": null
+        },
+        "x2": { "chrom": "chrom", "pos": "end" },
+        "color": {
+          "field": "intendedTissue",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Forebrain", "Heart", "Limb"],
+            "range": ["#4e79a7", "#e15759", "#59a14f"]
+          },
+          "legend": null
+        },
+        "strokeWidth": {
+          "expr": "datum.evidenceType === 'enhancer-gene prediction'",
+          "type": "nominal",
+          "scale": {
+            "type": "ordinal",
+            "domain": [true, false],
+            "range": [1.5, 0]
+          }
+        },
+        "tooltip": [
+          { "field": "name", "title": "Element" },
+          { "field": "intendedTissue", "title": "Intended tissue" },
+          { "field": "evidenceType", "title": "Evidence" },
+          { "field": "predictedTarget", "title": "Predicted target" },
+          { "field": "sourceEvidence", "title": "Published evidence" }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "color": "white",
+        "paddingX": 2,
+        "tooltip": null
+      },
+      "encoding": {
+        "x": { "chrom": "chrom", "pos": "start", "type": "locus" },
+        "x2": { "chrom": "chrom", "pos": "end" },
+        "text": { "field": "name" }
+      }
+    }
+  ]
+}

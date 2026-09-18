@@ -1,0 +1,40 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/npm/@genome-spy/app/dist/schema.json",
+  "assembly": "mm10",
+  "specId": "ENCODE mouse fetal development H3K27ac tissue tour v4",
+  "name": "encode-mouse-fetal-development-mm10",
+  "title": "Mouse fetal tissues: H3K27ac and expression",
+  "description": [
+    "Mouse fetal tissues: H3K27ac and expression",
+    "Full-resolution H3K27ac fold-change-over-control signal for 24 biological replicates from forebrain, heart, and limb at E11.5, E12.5, E13.5, and E15.5, restricted to a ten-megabase overview region and three one-megabase focused mm10 neighborhoods.",
+    "Expression cells show gene-wise z-scores of log2(mean TPM + 1) across the 12 tissue-stage conditions. Each condition mean comes from two bulk RNA-seq biological replicates and is shared across both H3K27ac rows; the assays are condition-matched, not sample-paired.",
+    "The included-region track marks where signal exists. Gorkin et al. elements and GENCODE M21 genes are separate annotation tracks so reporter activity, computational predictions, gene expression, and H3K27ac enrichment are not conflated."
+  ],
+  "bookmarks": {
+    "remote": {
+      "url": "bookmarks.json",
+      "initialBookmark": "Overview — all 24 samples",
+      "tour": true,
+      "afterTourBookmark": "mEN886 — tissue identity across stages"
+    }
+  },
+  "scales": {
+    "x": {
+      "domain": [
+        { "chrom": "chr10", "pos": 82400000 },
+        { "chrom": "chr10", "pos": 92400000 }
+      ]
+    }
+  },
+  "spacing": 5,
+  "vconcat": [
+    { "import": { "url": "included-regions.json" } },
+    { "import": { "url": "published-elements.json" } },
+    { "import": { "url": "samples.json" } },
+    { "import": { "url": "genes.json" } }
+  ],
+  "config": {
+    "style": { "group-title": { "orient": "none" } },
+    "legendTrack": { "disable": true }
+  }
+}

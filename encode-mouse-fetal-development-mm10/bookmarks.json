@@ -1,0 +1,240 @@
+[
+  {
+    "name": "Overview — all 24 samples",
+    "actions": [
+      {
+        "type": "sampleView/sortBy",
+        "payload": {
+          "attribute": { "type": "SAMPLE_ATTRIBUTE", "specifier": "H3K27ac/biologicalReplicate" },
+          "order": "ascending"
+        }
+      },
+      {
+        "type": "sampleView/groupByNominal",
+        "payload": {
+          "attribute": { "type": "SAMPLE_ATTRIBUTE", "specifier": "Sample/tissue" }
+        }
+      },
+      {
+        "type": "sampleView/groupByNominal",
+        "payload": {
+          "attribute": { "type": "SAMPLE_ATTRIBUTE", "specifier": "Sample/stageLabel" }
+        }
+      }
+    ],
+    "scaleDomains": {
+      "x_at_root": [
+        { "chrom": "chr10", "pos": 82400000 },
+        { "chrom": "chr10", "pos": 92400000 }
+      ]
+    },
+      "notes": "This overview combines 24 regional ENCODE H3K27ac tracks with condition-matched bulk RNA-seq across forebrain, heart, and limb at four embryonic stages. Tracks are grouped by tissue and stage, and signal scales to the current view. Explore the ten-megabase Ascl1 landscape freely; Included regions marks the available data, including three one-megabase windows used by later bookmarks.\n\nExpression colors are gene-wise z-scores of log2(mean TPM + 1) across the 12 tissue-stage conditions. Zero is a gene's average in this panel; blue is above average and orange is below average. Each value is the mean of two condition-matched bulk RNA-seq replicates and is shared by both H3K27ac rows for that condition—the assays are not sample-paired.\n\nThe following bookmarks zoom into individual regulatory examples and reduce or regroup the sample set when that makes the tissue contrast easier to see.\n\nSources: [ENCODE](https://www.encodeproject.org/) (Bing Ren H3K27ac; Barbara Wold RNA-seq), [Gorkin et al. (2020)](https://doi.org/10.1038/s41586-020-2093-3) (chromatin atlas, reporter results, and element annotations), and [He et al. (2020)](https://doi.org/10.1038/s41586-020-2536-x) (expression context). Exact accessions, provenance, the reproducible workflow, and rights information are available in the [dataset recipe](https://github.com/genome-spy/genomespy-dataset-recipes/tree/main/recipes/encode-mouse-fetal-development-mm10)."
+  },
+  {
+    "name": "Ascl1 — forebrain at E12.5",
+    "actions": [
+      {
+        "type": "sampleView/filterByNominal",
+        "payload": {
+          "attribute": { "type": "SAMPLE_ATTRIBUTE", "specifier": "Sample/stageLabel" },
+          "values": ["E12.5"]
+        }
+      },
+      {
+        "type": "sampleView/groupByNominal",
+        "payload": {
+          "attribute": { "type": "SAMPLE_ATTRIBUTE", "specifier": "Sample/tissue" }
+        }
+      }
+    ],
+    "scaleDomains": {
+      "x_at_root": [
+        { "chrom": "chr10", "pos": 87300000 },
+        { "chrom": "chr10", "pos": 87510000 }
+      ]
+    },
+    "notes": "Both E12.5 forebrain replicates show stronger H3K27ac across the five highlighted predictions than heart or limb. *Ascl1* and *Foxg1* expression reinforce the forebrain identity of these samples.\n\nThe highlighted intervals are published enhancer–*Ascl1* predictions from Gorkin et al. (2020). They are computational predictions, not proof that these intervals regulate *Ascl1*."
+  },
+  {
+    "name": "Ascl1 prediction 3 — chromatin and expression",
+    "actions": [
+      {
+        "type": "sampleView/sortBy",
+        "payload": {
+          "attribute": {
+            "type": "SAMPLE_ATTRIBUTE",
+            "specifier": "H3K27ac/biologicalReplicate"
+          },
+          "order": "ascending"
+        }
+      },
+      {
+        "type": "sampleView/groupByNominal",
+        "payload": {
+          "attribute": {
+            "type": "SAMPLE_ATTRIBUTE",
+            "specifier": "Sample/tissue"
+          }
+        }
+      },
+      {
+        "type": "sampleView/groupByNominal",
+        "payload": {
+          "attribute": {
+            "type": "SAMPLE_ATTRIBUTE",
+            "specifier": "Sample/stageLabel"
+          }
+        }
+      },
+      {
+        "type": "paramProvenance/paramChange",
+        "payload": {
+          "selector": {
+            "scope": [],
+            "param": "brush"
+          },
+          "value": {
+            "type": "interval",
+            "intervals": {
+              "x": [
+                { "chrom": "chr10", "pos": 87446400 },
+                { "chrom": "chr10", "pos": 87448800 }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "type": "sampleView/deriveMetadata",
+        "payload": {
+          "attribute": {
+            "type": "VALUE_AT_LOCUS",
+            "specifier": {
+              "view": {
+                "scope": ["h3k27ac-signal"],
+                "view": "h3k27ac-signal"
+              },
+              "field": "score",
+              "interval": {
+                "type": "selection",
+                "selector": {
+                  "scope": [],
+                  "param": "brush"
+                }
+              },
+              "aggregation": {
+                "op": "weightedMean"
+              }
+            }
+          },
+          "name": "Selected H3K27ac mean",
+          "groupPath": ""
+        }
+      }
+    ],
+    "scaleDomains": {
+      "x_at_root": [
+        { "chrom": "chr10", "pos": 87443089 },
+        { "chrom": "chr10", "pos": 87470758 }
+      ]
+    },
+    "plots": [
+      {
+        "kind": "sample_attribute_plot",
+        "definition": {
+          "plotType": "scatterplot",
+          "xAttribute": {
+            "type": "SAMPLE_ATTRIBUTE",
+            "specifier": "Selected H3K27ac mean"
+          },
+          "yAttribute": {
+            "type": "SAMPLE_ATTRIBUTE",
+            "specifier": "RNA-seq/Ascl1"
+          }
+        }
+      }
+    ],
+    "notes": "The brush marks the published interval Ascl1 prediction 3. GenomeSpy calculates its weighted-mean H3K27ac signal separately for every displayed row and plots that value against the *Ascl1* expression z-score. To explore another interval, create a new selection and then generate a new plot from it—either directly or after deriving a new metadata attribute.\n\nEach pair of H3K27ac replicates has independent signal values but shares one condition-level RNA-seq mean. The points are therefore not 24 independent paired observations. Read the plot as an exploratory comparison of compatible chromatin and expression patterns, not as a correlation test or evidence that the selected interval regulates *Ascl1*."
+  },
+  {
+    "name": "mEN978 — heart reporter element",
+    "actions": [
+      {
+        "type": "sampleView/filterByNominal",
+        "payload": {
+          "attribute": { "type": "SAMPLE_ATTRIBUTE", "specifier": "Sample/stageLabel" },
+          "values": ["E12.5"]
+        }
+      },
+      {
+        "type": "sampleView/groupByNominal",
+        "payload": {
+          "attribute": { "type": "SAMPLE_ATTRIBUTE", "specifier": "Sample/tissue" }
+        }
+      }
+    ],
+    "scaleDomains": {
+      "x_at_root": [
+        { "chrom": "chr7", "pos": 139463691 },
+        { "chrom": "chr7", "pos": 139488244 }
+      ]
+    },
+    "notes": "Both E12.5 heart replicates show a strong H3K27ac peak at mEN978, while forebrain and limb remain low on the same scale. *Tnnt2* and *Nkx2-5* expression identify the heart samples.\n\nIn Gorkin et al. (2020), mEN978 drove heart reporter activity in 5 of 8 embryos. This supports activity of the tested construct but does not establish an endogenous target gene."
+  },
+  {
+    "name": "mEN918 — limb reporter element",
+    "actions": [
+      {
+        "type": "sampleView/filterByNominal",
+        "payload": {
+          "attribute": { "type": "SAMPLE_ATTRIBUTE", "specifier": "Sample/stageLabel" },
+          "values": ["E12.5"]
+        }
+      },
+      {
+        "type": "sampleView/groupByNominal",
+        "payload": {
+          "attribute": { "type": "SAMPLE_ATTRIBUTE", "specifier": "Sample/tissue" }
+        }
+      }
+    ],
+    "scaleDomains": {
+      "x_at_root": [
+        { "chrom": "chr9", "pos": 43226693 },
+        { "chrom": "chr9", "pos": 43354451 }
+      ]
+    },
+    "notes": "Both E12.5 limb replicates show a strong H3K27ac peak at mEN918, while forebrain and heart remain low. *Hand2*, *Prrx1*, and *Myog* expression identify the limb samples.\n\nIn Gorkin et al. (2020), mEN918 drove limb reporter activity in 4 of 4 embryos and somite activity in 3 of 4. The result is not limb-exclusive and does not identify an endogenous target gene."
+  },
+  {
+    "name": "mEN886 — tissue identity across stages",
+    "actions": [
+      {
+        "type": "sampleView/sortBy",
+        "payload": {
+          "attribute": { "type": "SAMPLE_ATTRIBUTE", "specifier": "H3K27ac/biologicalReplicate" },
+          "order": "ascending"
+        }
+      },
+      {
+        "type": "sampleView/groupByNominal",
+        "payload": {
+          "attribute": { "type": "SAMPLE_ATTRIBUTE", "specifier": "Sample/tissue" }
+        }
+      },
+      {
+        "type": "sampleView/groupByNominal",
+        "payload": {
+          "attribute": { "type": "SAMPLE_ATTRIBUTE", "specifier": "Sample/stageLabel" }
+        }
+      }
+    ],
+    "scaleDomains": {
+      "x_at_root": [
+        { "chrom": "chr12", "pos": 111675498 },
+        { "chrom": "chr12", "pos": 111721470 }
+      ]
+    },
+    "notes": "Across the developmental panel, mEN886 shows a clear forebrain-associated H3K27ac pattern. Compare the stages vertically, but do not assume that the signal follows a simple increasing or decreasing trajectory.\n\n[Gorkin et al. (2020)](https://doi.org/10.1038/s41586-020-2093-3) reported neural reporter activity for mEN886. The overlapping *Ckb*-linked interval is a separate computational prediction; neither annotation proves endogenous *Ckb* regulation."
+  }
+]

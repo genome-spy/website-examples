@@ -1,0 +1,56 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/npm/@genome-spy/app/dist/schema.json",
+  "name": "samples",
+  "title": "H3K27ac fold change over control",
+  "description": "Each row is one biological replicate. The linear y-scale starts at zero and is shared across the displayed rows, but it adapts to the data in the current viewport. Drag across the signal tracks to select an interval for sample-level summaries and plots.",
+  "stickySummaries": true,
+  "samples": {
+    "identity": {
+      "data": { "url": "https://data.genomespy.app/datasets/encode-mouse-fetal-development-mm10/v4/samples.tsv" },
+      "idField": "sampleId",
+      "displayNameField": "rowLabel"
+    },
+    "labelTitle": "Sample"
+  },
+  "sampleLayout": {
+    "sampleHeight": 20,
+    "groupSpacing": 5,
+    "peekGroupSpacing": 9,
+    "sampleSpacingFactor": 0.06
+  },
+  "sampleYAxis": { "mode": "top", "minSampleHeight": 18 },
+  "metadata": {
+    "title": "Sample metadata",
+    "attributeWidth": 11,
+    "missingValueColor": "#bdbdbd",
+    "sources": [{ "import": { "url": "metadata.json" } }]
+  },
+  "spec": {
+    "params": [
+      {
+        "name": "brush",
+        "select": {
+          "type": "interval",
+          "encodings": ["x"],
+          "zoom": "wheel[event.shiftKey]",
+          "mark": {
+            "fill": "#f2b134",
+            "fillOpacity": 0.08,
+            "stroke": "#8a5a00",
+            "strokeOpacity": 0.9,
+            "measure": "inside",
+            "shadowOpacity": 1,
+            "shadowColor": "white",
+            "shadowBlur": 20
+          }
+        }
+      }
+    ],
+    "layer": [
+      {
+        "import": { "url": "h3k27ac-signal.json" },
+        "name": "h3k27ac-signal"
+      }
+    ]
+  }
+}

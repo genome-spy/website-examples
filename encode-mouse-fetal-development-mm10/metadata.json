@@ -1,0 +1,71 @@
+{
+  "id": "fetal-tissues",
+  "name": "Mouse fetal tissue panel",
+  "description": "Biological context, H3K27ac assay provenance, and condition-matched RNA-seq expression metadata.",
+  "attributeGroupSeparator": ".",
+  "initialLoad": "*",
+  "excludeColumns": ["rowLabel"],
+  "backend": {
+    "backend": "data",
+    "data": { "url": "https://data.genomespy.app/datasets/encode-mouse-fetal-development-mm10/v4/samples.tsv" },
+    "sampleIdField": "sampleId"
+  },
+  "attributes": {
+    "Sample": { "title": "Sample context" },
+    "Sample.tissue": {
+      "title": "Tissue",
+      "type": "ordinal",
+      "scale": {
+        "type": "ordinal",
+        "domain": ["Forebrain", "Heart", "Limb"],
+        "range": ["#4e79a7", "#e15759", "#59a14f"]
+      }
+    },
+    "Sample.stageDays": { "title": "Embryonic age", "type": "quantitative", "visible": false },
+    "Sample.stageLabel": {
+      "title": "Stage",
+      "type": "ordinal",
+      "scale": {
+        "type": "ordinal",
+        "domain": ["E11.5", "E12.5", "E13.5", "E15.5"],
+        "range": ["#f0f0f0", "#bdbdbd", "#737373", "#252525"]
+      }
+    },
+    "Sample.strain": { "title": "Strain", "type": "nominal", "visible": false },
+    "Sample.preparation": { "title": "Preparation", "type": "nominal", "visible": false },
+    "H3K27ac": { "title": "H3K27ac assay" },
+    "H3K27ac.biologicalReplicate": {
+      "title": "ChIP rep",
+      "type": "ordinal",
+      "scale": { "type": "ordinal", "domain": [1, 2], "range": ["#9ecae1", "#3182bd"] }
+    },
+    "H3K27ac.technicalReplicate": { "title": "Technical run(s)", "type": "nominal", "visible": false },
+    "H3K27ac.biosample": { "title": "ChIP biosample", "type": "nominal", "visible": false },
+    "H3K27ac.experiment": { "title": "ChIP experiment", "type": "nominal", "visible": false },
+    "H3K27ac.fileAccession": { "title": "ChIP file", "type": "nominal", "visible": false },
+    "H3K27ac.signal": { "title": "Signal", "type": "nominal", "visible": false },
+    "RNA-seq": {
+      "title": "RNA-seq expression",
+      "type": "quantitative",
+      "scale": { "domain": [-2, 0, 2], "range": ["#d6604d", "#f7f7f7", "#2166ac"] },
+      "description": "Gene-wise z-scores of log2(mean TPM + 1) across the 12 tissue-stage conditions. Zero is a gene's panel mean; each condition value is shared by both H3K27ac rows."
+    },
+    "RNA-seq.provenance": { "title": "Provenance", "type": "nominal", "visible": false },
+    "RNA-seq.provenance.join": { "title": "RNA join" },
+    "RNA-seq.provenance.experiment": { "title": "RNA experiment" },
+    "RNA-seq.provenance.replicateCount": { "title": "RNA n", "type": "quantitative" },
+    "RNA-seq.provenance.fileAccessions": { "title": "RNA files" },
+    "RNA-seq.log2Abundance": {
+      "title": "Log2 abundance",
+      "type": "quantitative",
+      "visible": false,
+      "scale": { "scheme": "blues", "domain": [0, 12] }
+    },
+    "RNA-seq.meanTpm": {
+      "title": "Mean TPM",
+      "type": "quantitative",
+      "visible": false,
+      "scale": { "scheme": "blues" }
+    }
+  }
+}

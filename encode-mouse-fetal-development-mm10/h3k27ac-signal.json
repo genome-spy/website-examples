@@ -1,0 +1,42 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/npm/@genome-spy/core/dist/schema.json",
+  "name": "h3k27ac-signal",
+  "height": 20,
+  "view": { "fill": "black", "fillOpacity": 0.025 },
+  "data": {
+    "lazy": {
+      "type": "bigwig",
+      "url": {
+        "template": "https://data.genomespy.app/datasets/encode-mouse-fetal-development-mm10/v4/bigwigs/{sampleId}.bigWig",
+        "values": { "expr": "visibleSamples" },
+        "field": "sampleId",
+        "maxValues": 24
+      },
+      "pixelsPerBin": 1
+    }
+  },
+  "transform": [
+    { "type": "filter", "expr": "isValid(datum.score) && datum.score >= 0" }
+  ],
+  "mark": { "type": "rect", "color": "#4c78a8", "minWidth": 0.5 },
+  "encoding": {
+    "sample": { "field": "sampleId" },
+    "x": {
+      "chrom": "chrom",
+      "pos": "start",
+      "type": "locus",
+      "axis": { "grid": true, "gridColor": "#eeeeee", "chromGrid": true }
+    },
+    "x2": { "chrom": "chrom", "pos": "end" },
+    "y": {
+      "field": "score",
+      "type": "quantitative",
+      "scale": { "zero": true },
+      "axis": { "title": "Fold change", "titleFit": "range" }
+    },
+    "tooltip": [
+      { "field": "sampleId", "title": "H3K27ac row" },
+      { "field": "score", "title": "Fold change", "format": ".4g" }
+    ]
+  }
+}

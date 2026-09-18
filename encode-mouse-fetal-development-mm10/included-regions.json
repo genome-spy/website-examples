@@ -1,0 +1,53 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/npm/@genome-spy/core/dist/schema.json",
+
+  "name": "included-regions",
+
+  "title": { "text": "Included regions", "style": "track-title" },
+
+  "description": "Search Ascl1 landscape, mEN886, mEN978, or mEN918. An empty track outside these four intervals means no data were retained, not biological inactivity.",
+
+  "height": 20,
+
+  "data": { "url": "https://data.genomespy.app/datasets/encode-mouse-fetal-development-mm10/v4/regions.tsv" },
+
+  "encoding": {
+    "x": {
+      "chrom": "chrom",
+      "pos": "start",
+      "type": "locus",
+      "axis": null
+    },
+    "x2": { "chrom": "chrom", "pos": "end" }
+  },
+
+  "layer": [
+    {
+      "mark": {
+        "type": "rect",
+        "color": "#c4daed",
+        "cornerRadius": 2,
+        "clip": "x"
+      },
+      "encoding": {
+        "search": { "field": "name" },
+        "tooltip": [
+          { "field": "name", "title": "Included region" },
+          { "field": "description", "title": "Purpose" }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "color": "#1f4e79",
+        "fontWeight": "bold",
+        "paddingX": 2,
+        "tooltip": null
+      },
+      "encoding": {
+        "text": { "field": "name" }
+      }
+    }
+  ]
+}
