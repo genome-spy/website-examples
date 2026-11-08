@@ -1,0 +1,68 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/npm/@genome-spy/app/dist/schema.json",
+  "assembly": "mm10",
+  "specId": "ENCODE mouse fetal chromatin chr1 v4 figwig",
+  "name": "encode-mouse-fetal-chromatin-mm10-figwig",
+  "title": "Mouse fetal chromatin: 256 tracks on chr1",
+  "description": [
+    "Mouse fetal chromatin: 256 tracks on chr1",
+    "Eight histone marks in forebrain, heart, limb and liver at E11.5, E12.5, E13.5 and E15.5, with two biological replicates per condition. Native-resolution ENCODE fold-change signals are retained across mm10 chr1.",
+    "Use the bookmarks to change genomic scale and the visible track set. Compare signal magnitudes within a histone mark; the displayed rows share a dynamic linear y-scale. Missing observations are distinct from measured zeros.",
+    "Fast Figwig mode uses rounded sum summaries with missing observations contributing zero at coarse scales. Zooming below tile resolution reads raw values and averages observed bases.",
+    "Reference tracks show UCSC mm10 cytobands, the ENCODE4 cCRE registry combined across biosamples, and GENCODE M25 genes. The reference annotations cover the canonical genome; histone signals cover chr1 only."
+  ],
+  "bookmarks": {
+    "remote": {
+      "url": "bookmarks.json",
+      "initialBookmark": "Prrx1 landscape \u2014 all 256 tracks",
+      "tour": false
+    }
+  },
+  "scales": {
+    "x": {
+      "domain": [
+        {
+          "chrom": "chr1",
+          "pos": 158000000
+        },
+        {
+          "chrom": "chr1",
+          "pos": 168000000
+        }
+      ]
+    }
+  },
+  "spacing": 5,
+  "vconcat": [
+    {
+      "import": {
+        "url": "cytobands.json"
+      }
+    },
+    {
+      "import": {
+        "url": "ccres.json"
+      }
+    },
+    {
+      "import": {
+        "url": "samples-figwig.json"
+      }
+    },
+    {
+      "import": {
+        "url": "genes.json"
+      }
+    }
+  ],
+  "config": {
+    "style": {
+      "group-title": {
+        "orient": "none"
+      }
+    },
+    "legendTrack": {
+      "disable": true
+    }
+  }
+}

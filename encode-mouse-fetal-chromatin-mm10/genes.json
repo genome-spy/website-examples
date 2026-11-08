@@ -1,0 +1,237 @@
+{
+  "$schema": "https://unpkg.com/@genome-spy/core/dist/schema.json",
+
+  "name": "gencode-gene-track",
+
+  "description": "GENCODE mouse M25 gene annotations scored with NCBI PubMed citation counts. Exons are synthesized into one compressed annotation per gene.",
+
+  "title": {
+    "text": "GENCODE M25 gene annotation",
+    "orient": "none"
+  },
+
+  "params": [
+    {
+      "name": "symbolFontSize",
+      "value": 11,
+      "bind": {
+        "input": "range",
+        "min": 8,
+        "max": 20,
+        "step": 0.5,
+        "name": "Symbol font size"
+      }
+    }
+  ],
+
+  "height": { "step": 23 },
+
+  "data": {
+    "url": "https://data.genomespy.app/datasets/encode-mouse-fetal-chromatin-mm10/v5/external-data/gencodeGenes-mm10.tsv.gz",
+    "format": {
+      "parse": {
+        "symbol": "string",
+        "chrom": "string",
+        "start": "integer",
+        "length": "integer",
+        "strand": "string",
+        "score": "integer",
+        "exons": "string"
+      }
+    }
+  },
+
+  "transform": [
+    {
+      "type": "linearizeGenomicCoordinate",
+      "chrom": "chrom",
+      "pos": "start",
+      "as": "_start"
+    },
+    {
+      "type": "formula",
+      "expr": "datum._start + datum.length",
+      "as": "_end"
+    },
+    {
+      "type": "collect",
+      "sort": { "field": ["_start"] }
+    },
+    {
+      "type": "pileup",
+      "start": "_start",
+      "end": "_end",
+      "as": "_lane",
+      "preference": "strand",
+      "preferredOrder": ["-", "+"]
+    },
+    {
+      "type": "filter",
+      "expr": "datum._lane < 3"
+    }
+  ],
+
+  "encoding": {
+    "y": {
+      "field": "_lane",
+      "type": "ordinal",
+      "scale": {
+        "type": "index",
+        "align": 0,
+        "paddingInner": 0.4,
+        "paddingOuter": 0.2,
+        "domain": [0, 3],
+        "reverse": true,
+        "zoom": false
+      },
+      "axis": null
+    }
+  },
+
+  "layer": [
+    {
+      "name": "transcripts",
+
+      "opacity": {
+        "unitsPerPixel": [100000, 40000],
+        "values": [0, 1]
+      },
+
+      "encoding": {
+        "color": { "value": "#909090" }
+      },
+
+      "layer": [
+        {
+          "name": "exons",
+
+          "transform": [
+            { "type": "project", "fields": ["_lane", "_start", "exons"] },
+            { "type": "flattenCompressedExons", "start": "_start" }
+          ],
+
+          "mark": {
+            "type": "rect",
+            "minOpacity": 0.2,
+            "minWidth": 0.5,
+            "tooltip": null
+          },
+
+          "encoding": {
+            "x": { "field": "exonStart", "type": "locus" },
+            "x2": { "field": "exonEnd" }
+          }
+        },
+        {
+          "name": "bodies",
+
+          "title": "Gene annotations",
+
+          "transform": [
+            {
+              "type": "formula",
+              "expr": "datum.start + datum.length",
+              "as": "end"
+            }
+          ],
+
+          "mark": {
+            "type": "rule",
+            "minLength": 0.5,
+            "size": 1,
+            "tooltip": null
+          },
+          "encoding": {
+            "x": { "field": "_start", "type": "locus", "axis": null },
+            "x2": { "field": "_end" },
+            "search": {
+              "field": "symbol",
+              "description": "Mouse gene symbols for looking up GENCODE M25 genes."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "symbols",
+
+      "transform": [
+        { "type": "collect" },
+        {
+          "type": "measureText",
+          "fontSize": { "expr": "symbolFontSize" },
+          "field": "symbol",
+          "as": "_textWidth"
+        },
+        {
+          "type": "filterScoredLabels",
+          "lane": "_lane",
+          "score": "score",
+          "width": "_textWidth",
+          "pos": "_start",
+          "pos2": "_end",
+          "asMidpoint": "_midpoint",
+          "padding": 8
+        }
+      ],
+
+      "layer": [
+        {
+          "name": "labels",
+          "mark": {
+            "type": "text",
+            "size": { "expr": "symbolFontSize" },
+            "yOffset": 7,
+            "tooltip": {
+              "handler": "refseqgene",
+              "params": {
+                "Organism": "Mus musculus"
+              }
+            }
+          },
+          "encoding": {
+            "x": {
+              "field": "_midpoint",
+              "type": "locus"
+            },
+            "text": { "field": "symbol" }
+          }
+        },
+        {
+          "name": "arrows",
+          "description": "Strand direction arrows for gene symbols. Only shown when zoomed in close enough.",
+          "opacity": {
+            "unitsPerPixel": [100000, 40000],
+            "values": [0, 1]
+          },
+          "mark": {
+            "type": "point",
+            "yOffset": 7,
+            "size": 50,
+            "tooltip": null
+          },
+          "encoding": {
+            "x": {
+              "field": "_midpoint",
+              "type": "locus"
+            },
+            "dx": {
+              "expr": "(datum._textWidth / 2 + 5) * (datum.strand == '-' ? -1 : 1)",
+              "type": "quantitative",
+              "scale": null
+            },
+            "color": { "value": "black" },
+            "shape": {
+              "field": "strand",
+              "type": "nominal",
+              "scale": {
+                "domain": ["-", "+"],
+                "range": ["triangle-left", "triangle-right"]
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "id": "fetal-chromatin",
+  "name": "Mouse fetal chromatin panel",
+  "description": "Tissue, embryonic stage, histone mark, replicate and ENCODE provenance for 256 signal tracks.",
+  "attributeGroupSeparator": ".",
+  "initialLoad": "*",
+  "excludeColumns": [
+    "sampleId",
+    "rowLabel",
+    "tissue",
+    "stage",
+    "mark",
+    "biologicalReplicate",
+    "encodeFileAccession"
+  ],
+  "attributes": {
+    "Sample": {
+      "title": "Developmental context"
+    },
+    "Sample.tissue": {
+      "title": "Tissue",
+      "type": "ordinal",
+      "scale": {
+        "domain": [
+          "Forebrain",
+          "Heart",
+          "Limb",
+          "Liver"
+        ],
+        "range": [
+          "#4e79a7",
+          "#e15759",
+          "#59a14f",
+          "#b07aa1"
+        ]
+      }
+    },
+    "Sample.stageDays": {
+      "title": "Embryonic age",
+      "type": "quantitative",
+      "visible": false
+    },
+    "Sample.stageLabel": {
+      "title": "Stage",
+      "type": "ordinal",
+      "scale": {
+        "domain": [
+          "E11.5",
+          "E12.5",
+          "E13.5",
+          "E15.5"
+        ],
+        "range": [
+          "#eeeeee",
+          "#bdbdbd",
+          "#737373",
+          "#252525"
+        ]
+      }
+    },
+    "Assay": {
+      "title": "Histone ChIP-seq"
+    },
+    "Assay.mark": {
+      "title": "Histone mark",
+      "type": "ordinal",
+      "scale": {
+        "domain": [
+          "H3K27ac",
+          "H3K27me3",
+          "H3K36me3",
+          "H3K4me1",
+          "H3K4me2",
+          "H3K4me3",
+          "H3K9ac",
+          "H3K9me3"
+        ],
+        "range": [
+          "#e15759",
+          "#b07aa1",
+          "#76b7b2",
+          "#f28e2b",
+          "#edc949",
+          "#4e79a7",
+          "#ff9da7",
+          "#79706e"
+        ]
+      }
+    },
+    "Assay.biologicalReplicate": {
+      "title": "Replicate",
+      "type": "ordinal",
+      "scale": {
+        "domain": [
+          1,
+          2
+        ],
+        "range": [
+          "#9ecae1",
+          "#3182bd"
+        ]
+      }
+    },
+    "Assay.technicalReplicate": {
+      "title": "Technical run(s)",
+      "type": "nominal",
+      "visible": false
+    },
+    "Assay.biosample": {
+      "title": "Biosample accession",
+      "type": "nominal",
+      "visible": false
+    },
+    "Assay.experiment": {
+      "title": "Experiment accession",
+      "type": "nominal",
+      "visible": false
+    },
+    "Assay.fileAccession": {
+      "title": "File accession",
+      "type": "nominal",
+      "visible": false
+    },
+    "Assay.signal": {
+      "title": "Signal output",
+      "type": "nominal",
+      "visible": false
+    },
+    "QC": {
+      "title": "ENCODE audits",
+      "visible": false
+    },
+    "QC.auditWarningCount": {
+      "title": "Warning codes",
+      "type": "quantitative"
+    },
+    "QC.auditNotCompliantCount": {
+      "title": "Not-compliant codes",
+      "type": "quantitative"
+    }
+  },
+  "backend": {
+    "backend": "figwig",
+    "url": "https://data.genomespy.app/datasets/encode-mouse-fetal-chromatin-mm10/v5/chromatin.fw"
+  }
+}

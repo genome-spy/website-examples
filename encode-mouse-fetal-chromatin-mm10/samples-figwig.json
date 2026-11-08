@@ -1,0 +1,41 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/npm/@genome-spy/app/dist/schema.json",
+  "name": "samples",
+  "title": "Fetal histone ChIP-seq",
+  "description": "Each row is one histone-mark assay in one tissue-stage biological replicate. The y-scale is shared across displayed rows and adapts to the viewport; filter to one mark before interpreting magnitudes.",
+  "stickySummaries": true,
+  "samples": {
+    "identity": {
+      "metadataSource": "fetal-chromatin",
+      "displayNameField": "rowLabel"
+    },
+    "labelTitle": "Signal track"
+  },
+  "sampleLayout": {
+    "sampleHeight": 16,
+    "groupSpacing": 5,
+    "peekGroupSpacing": 8,
+    "sampleSpacingFactor": 0.05
+  },
+  "sampleYAxis": {
+    "mode": "top",
+    "minSampleHeight": 15
+  },
+  "metadata": {
+    "title": "Track metadata",
+    "attributeWidth": 11,
+    "missingValueColor": "#bdbdbd",
+    "sources": [
+      {
+        "import": {
+          "url": "metadata-figwig.json"
+        }
+      }
+    ]
+  },
+  "spec": {
+    "import": {
+      "url": "signal-figwig.json"
+    }
+  }
+}

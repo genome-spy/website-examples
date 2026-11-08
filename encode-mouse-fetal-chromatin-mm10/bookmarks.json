@@ -1,0 +1,233 @@
+[
+  {
+    "name": "Prrx1 landscape \u2014 all 256 tracks",
+    "actions": [
+      {
+        "type": "sampleView/groupByNominal",
+        "payload": {
+          "attribute": {
+            "type": "SAMPLE_ATTRIBUTE",
+            "specifier": "Assay/mark"
+          }
+        }
+      }
+    ],
+    "scaleDomains": {
+      "x_at_root": [
+        {
+          "chrom": "chr1",
+          "pos": 158000000
+        },
+        {
+          "chrom": "chr1",
+          "pos": 168000000
+        }
+      ]
+    },
+    "notes": "Ten megabases around Prrx1 with all 256 tracks. This broad view exercises summary access. Rows span eight histone marks and share one dynamic y-scale, so filter by mark before comparing biological magnitudes. In fast Figwig mode, coarse means include missing bases as zero; exact Figwig mode uses observed-base means and can read substantial raw data. Sources: [ENCODE](https://www.encodeproject.org/) and the Bing Ren laboratory; [Gorkin et al. (2020)](https://doi.org/10.1038/s41586-020-2093-3); [GENCODE M25](https://www.gencodegenes.org/mouse/release_M25.html). Exact accessions and conversion parameters are recorded in the dataset recipe."
+  },
+  {
+    "name": "Whole chr1 \u2014 all 256 tracks",
+    "actions": [
+      {
+        "type": "sampleView/groupByNominal",
+        "payload": {
+          "attribute": {
+            "type": "SAMPLE_ATTRIBUTE",
+            "specifier": "Assay/mark"
+          }
+        }
+      }
+    ],
+    "scaleDomains": {
+      "x_at_root": [
+        {
+          "chrom": "chr1",
+          "pos": 0
+        },
+        {
+          "chrom": "chr1",
+          "pos": 195471971
+        }
+      ]
+    },
+    "notes": "The complete retained chromosome. This tests a coarse overview and is distinct from normal regional navigation. Figwig fast mode can use stored summaries. The exact Figwig variant can transfer and decode most of the file for this view."
+  },
+  {
+    "name": "H3K27ac \u2014 32 tracks around Prrx1",
+    "actions": [
+      {
+        "type": "sampleView/filterByNominal",
+        "payload": {
+          "attribute": {
+            "type": "SAMPLE_ATTRIBUTE",
+            "specifier": "Assay/mark"
+          },
+          "values": [
+            "H3K27ac"
+          ]
+        }
+      },
+      {
+        "type": "sampleView/groupByNominal",
+        "payload": {
+          "attribute": {
+            "type": "SAMPLE_ATTRIBUTE",
+            "specifier": "Sample/tissue"
+          }
+        }
+      },
+      {
+        "type": "sampleView/groupByNominal",
+        "payload": {
+          "attribute": {
+            "type": "SAMPLE_ATTRIBUTE",
+            "specifier": "Sample/stageLabel"
+          }
+        }
+      }
+    ],
+    "scaleDomains": {
+      "x_at_root": [
+        {
+          "chrom": "chr1",
+          "pos": 158000000
+        },
+        {
+          "chrom": "chr1",
+          "pos": 168000000
+        }
+      ]
+    },
+    "notes": "Keep one mark across four tissues, four stages and two replicates. Compare tissues and stages on the same displayed y-scale. These processed enrichment values are exploratory signals, not calibrated absolute acetylation measurements."
+  },
+  {
+    "name": "Prrx1 detail \u2014 H3K27ac limb, 8 tracks",
+    "actions": [
+      {
+        "type": "sampleView/filterByNominal",
+        "payload": {
+          "attribute": {
+            "type": "SAMPLE_ATTRIBUTE",
+            "specifier": "Assay/mark"
+          },
+          "values": [
+            "H3K27ac"
+          ]
+        }
+      },
+      {
+        "type": "sampleView/filterByNominal",
+        "payload": {
+          "attribute": {
+            "type": "SAMPLE_ATTRIBUTE",
+            "specifier": "Sample/tissue"
+          },
+          "values": [
+            "Limb"
+          ]
+        }
+      },
+      {
+        "type": "sampleView/groupByNominal",
+        "payload": {
+          "attribute": {
+            "type": "SAMPLE_ATTRIBUTE",
+            "specifier": "Sample/stageLabel"
+          }
+        }
+      }
+    ],
+    "scaleDomains": {
+      "x_at_root": [
+        {
+          "chrom": "chr1",
+          "pos": 163230000
+        },
+        {
+          "chrom": "chr1",
+          "pos": 163330000
+        }
+      ]
+    },
+    "notes": "A 100 kb view around the GENCODE M25 Prrx1 gene. Eight tracks remain: four stages and two limb replicates. Pan by tens of kilobases and zoom further to exercise raw chunk access. The locus is a navigation reference, without a claim of a particular regulatory effect."
+  },
+  {
+    "name": "Pax3 detail \u2014 H3K4me3, 32 tracks",
+    "actions": [
+      {
+        "type": "sampleView/filterByNominal",
+        "payload": {
+          "attribute": {
+            "type": "SAMPLE_ATTRIBUTE",
+            "specifier": "Assay/mark"
+          },
+          "values": [
+            "H3K4me3"
+          ]
+        }
+      },
+      {
+        "type": "sampleView/groupByNominal",
+        "payload": {
+          "attribute": {
+            "type": "SAMPLE_ATTRIBUTE",
+            "specifier": "Sample/tissue"
+          }
+        }
+      }
+    ],
+    "scaleDomains": {
+      "x_at_root": [
+        {
+          "chrom": "chr1",
+          "pos": 78090000
+        },
+        {
+          "chrom": "chr1",
+          "pos": 78210000
+        }
+      ]
+    },
+    "notes": "A distant chromosome jump to the GENCODE M25 Pax3 interval. This bookmark selects a different mark and exercises fetching data away from the initial Prrx1 view. The gene annotation supplies context, not a claim that every sample has an active promoter."
+  },
+  {
+    "name": "Myog landscape \u2014 H3K27me3, 32 tracks",
+    "actions": [
+      {
+        "type": "sampleView/filterByNominal",
+        "payload": {
+          "attribute": {
+            "type": "SAMPLE_ATTRIBUTE",
+            "specifier": "Assay/mark"
+          },
+          "values": [
+            "H3K27me3"
+          ]
+        }
+      },
+      {
+        "type": "sampleView/groupByNominal",
+        "payload": {
+          "attribute": {
+            "type": "SAMPLE_ATTRIBUTE",
+            "specifier": "Sample/tissue"
+          }
+        }
+      }
+    ],
+    "scaleDomains": {
+      "x_at_root": [
+        {
+          "chrom": "chr1",
+          "pos": 129000000
+        },
+        {
+          "chrom": "chr1",
+          "pos": 139000000
+        }
+      ]
+    },
+    "notes": "A broad-domain mark around the GENCODE M25 Myog interval. Compare its spatial pattern with narrow-mark views while keeping biological interpretation within a mark. Revisit this bookmark after exploring other regions to observe cached and repeated access."
+  }
+]

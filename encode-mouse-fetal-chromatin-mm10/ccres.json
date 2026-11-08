@@ -1,0 +1,131 @@
+{
+  "$schema": "https://cdn.jsdelivr.net/npm/@genome-spy/core/dist/schema.json",
+  "name": "mm10-ccres",
+  "title": {
+    "text": "ENCODE4 cCREs",
+    "style": "track-title"
+  },
+  "description": "ENCODE4 mm10 candidate cis-regulatory elements combined across biosamples. These classes describe the integrated registry, not activity in each fetal tissue or stage. Source: ENCODE Consortium and Weng laboratory, distributed by UCSC.",
+  "height": 18,
+  "layer": [
+    {
+      "data": {
+        "values": [{}]
+      },
+      "mark": {
+        "type": "rule",
+        "color": "lightgray",
+        "size": 1,
+        "strokeDash": [2, 2],
+        "tooltip": null
+      },
+      "encoding": {
+        "y": {
+          "value": 0.5
+        }
+      }
+    },
+    {
+      "stops": [
+        {
+          "expr": "1000000 / max(width, 1)"
+        }
+      ],
+      "multiscale": [
+        {
+          "data": {
+            "values": [{}]
+          },
+          "mark": {
+            "type": "text",
+            "text": "Zoom in to see cCREs",
+            "opacity": 0.6,
+            "tooltip": null
+          }
+        },
+        {
+          "data": {
+            "lazy": {
+              "type": "bigbed",
+              "url": "https://data.genomespy.app/datasets/encode-mouse-fetal-chromatin-mm10/v5/external-data/encodeCcreRegistry.mm10.bb",
+              "windowSize": 1000000
+            }
+          },
+          "mark": {
+            "type": "rect",
+            "clip": "x",
+            "minOpacity": 0.4,
+            "cornerRadius": 3
+          },
+          "encoding": {
+            "x": {
+              "chrom": "chrom",
+              "pos": "chromStart",
+              "type": "locus",
+              "axis": null
+            },
+            "x2": {
+              "chrom": "chrom",
+              "pos": "chromEnd"
+            },
+            "color": {
+              "field": "cCRE_class",
+              "type": "nominal",
+              "legend": {
+                "title": "cCRE class"
+              },
+              "scale": {
+                "domain": [
+                  "Promoter",
+                  "Proximal enhancer",
+                  "Distal enhancer",
+                  "CA-H3K4me3",
+                  "CA-CTCF",
+                  "CA",
+                  "TF",
+                  "CA-TF"
+                ],
+                "range": [
+                  "#ff0000",
+                  "#ffa700",
+                  "#ffcd00",
+                  "#ffaaaa",
+                  "#00b0f0",
+                  "#06da93",
+                  "#d876ec",
+                  "#be28e5"
+                ]
+              }
+            },
+            "tooltip": [
+              {
+                "field": "name",
+                "title": "cCRE"
+              },
+              {
+                "field": "cCRE_class",
+                "title": "Registry class"
+              },
+              {
+                "field": "DNase_maxZ",
+                "title": "DNase max Z-score"
+              },
+              {
+                "field": "H3K4me3_maxZ",
+                "title": "H3K4me3 max Z-score"
+              },
+              {
+                "field": "H3K27ac_maxZ",
+                "title": "H3K27ac max Z-score"
+              },
+              {
+                "field": "CTCF_maxZ",
+                "title": "CTCF max Z-score"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
